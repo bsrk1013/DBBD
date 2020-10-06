@@ -9,42 +9,13 @@ using System.Threading;
 
 namespace dbbd
 {
-    public abstract class AbstractTcpServer : IDisposable
+    public abstract class AbstractTcpServer : AbstractServerBase
     {
-        protected string name;
-
-        protected Socket socket = null;
-        protected bool disposed = false;
-        protected SortedList<int, Object> sessionMap = null;
-
-        protected ReaderWriterLockSlim rwlock;
 
         protected AbstractTcpServer(string name)
+            :base(name)
         {
-            this.name = name;
-
-            rwlock = new ReaderWriterLockSlim();
-            sessionMap = new SortedList<int, object>();
         }
-
-        #region Get/Set
-        public Object GetSession(int handle)
-        {
-            using (new ReadLock(rwlock))
-            {
-                sessionMap.TryGetValue(handle, out var session);
-                return session;
-            }
-        }
-
-        public IList GetSessionList()
-        {
-            using (new ReadLock(rwlock))
-            {
-                return new List<Object>(sessionMap.Values);
-            }
-        }
-        #endregion
 
         #region Listen/Accept
         public void Listen(int port)
@@ -80,17 +51,14 @@ namespace dbbd
             }
         }
 
-        // 상속받는 서버에서 Accept 후처리 구현
-        protected abstract void AcceptInternal();
-
-        protected virtual bool OnAcceptInternal(Object session)
+        protected override bool OnAcceptInternal(AbstractSessionBase session)
         {
-            var tcpSession = (Object)session;
+            var tcpSession = (AbstractSessionBase)session;
 
             try
             {
-                if (tcpSession == null) { return false; }
-
+                if (!base.OnAcceptInternal(session)) { return false; }
+                
                 //var clientSocket = tcpSession.Socket;
 
                 // 소켓 옵션 설정
@@ -119,33 +87,7 @@ namespace dbbd
         }
         #endregion
 
-        #region Send
-        public virtual void Send(int handle)
-        {
-            Object session = null;
-            using (new ReadLock(rwlock))
-            {
-                if (!sessionMap.TryGetValue(handle, out session)) { return; }
-            }
-            //session.Send()
-        }
-
-        public virtual void Broadcast()
-        {
-            var sessionList = GetSessionList();
-            foreach(var session in sessionList)
-            {
-                //session.Send();
-            }
-        }
-        #endregion
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposed) { return; }
 
@@ -154,7 +96,7 @@ namespace dbbd
                 socket.Close();
             }
 
-            rwlock.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
