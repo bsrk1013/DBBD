@@ -25,6 +25,11 @@ namespace dbbd
         }
 
         #region Get/Set
+        public bool Listening
+        {
+            get { return (socket != null && socket.IsBound); }
+        }
+
         public Object GetSession(int handle)
         {
             using (new ReadLock(rwlock))
@@ -86,6 +91,21 @@ namespace dbbd
         private void InitSession(AbstractSessionBase session)
         {
             /// FIXME 하트비트 등 session 기능 추가
+        }
+        #endregion
+
+        #region Session
+        protected void OnSessionConectedInternal(AbstractSessionBase session)
+        {
+            using (new WriteLock(rwlock))
+            {
+
+            }
+        }
+
+        protected void OnSessionDisconnectedInternal()
+        {
+
         }
         #endregion
 
