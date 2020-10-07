@@ -91,6 +91,8 @@ namespace dbbd
         private void InitSession(AbstractSessionBase session)
         {
             /// FIXME 하트비트 등 session 기능 추가
+            /// 
+
         }
         #endregion
 
