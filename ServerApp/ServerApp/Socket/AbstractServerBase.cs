@@ -90,26 +90,26 @@ namespace dbbd
 
         private void InitSession(AbstractSessionBase session)
         {
-            /// FIXME 하트비트 등 session 기능 추가
-            /// 
+            // FIXME 하트비트 등 session 기능 추가
+            lock (session.LockObject)
+            {
+                session.Handle = SessionHandlePool.Acquire();
+                session.Connected = true;
+            }
 
-        }
-        #endregion
+            session.BeginReceive(true);
 
-        #region Session
-        protected void OnSessionConectedInternal(AbstractSessionBase session)
-        {
             using (new WriteLock(rwlock))
             {
-
+                sessionMap.Add(session.Handle, session);
             }
         }
-
-        protected void OnSessionDisconnectedInternal()
-        {
-
-        }
         #endregion
+
+        protected void OnSessionDisconnectedInternal(AbstractSessionBase session)
+        {
+            SessionHandlePool.Release(session.Handle);
+        }
 
         public void Dispose()
         {
