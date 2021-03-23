@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일\Util">
+      <UniqueIdentifier>{ead5b6d7-75ce-407b-bc45-66b0c8b08433}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Util">
+      <UniqueIdentifier>{2bf19520-bd93-4abd-88bf-ee20928262b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Common">
+      <UniqueIdentifier>{0666d487-5fdd-4fab-8b88-80681d17eec6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Common">
+      <UniqueIdentifier>{80c51dc7-45d5-4ee5-a18f-0f9d7f753458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Object">
+      <UniqueIdentifier>{ef654816-300b-4686-bfbf-a179086290c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Object">
+      <UniqueIdentifier>{f3a34dea-7b70-4b84-ab4c-3103c30ec3e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Network">
+      <UniqueIdentifier>{804a0da6-6b5e-4490-8485-1e741ab36b48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Network">
+      <UniqueIdentifier>{85c35396-7f2d-4982-a448-38ef46d74e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Network\Base">
+      <UniqueIdentifier>{2a699af7-a536-4952-a2af-d6b5d7061b67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Timer">
+      <UniqueIdentifier>{9674eb18-765d-4816-be33-09d109ebdb21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Timer">
+      <UniqueIdentifier>{47d6f725-93af-497c-997d-f644369ec52b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Network\Tcp">
+      <UniqueIdentifier>{0b094b28-47f3-4b7a-9bf1-397c95fc274c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Network\Tcp">
+      <UniqueIdentifier>{78a1b6b2-dd15-47ed-9e22-2f4c87330340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\DB">
+      <UniqueIdentifier>{5504a258-1a29-47a6-871e-232756cf21fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\DB\Redis">
+      <UniqueIdentifier>{f2fdba85-7247-4328-8b99-c9df84d94025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\DB">
+      <UniqueIdentifier>{aea4513d-a45f-4930-95c2-c1b84fb44b9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\DB\Redis">
+      <UniqueIdentifier>{118f8317-a028-44a9-a6f5-aa00944116ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\DB\MariaDB">
+      <UniqueIdentifier>{42615211-4842-4d0b-9fa8-543e0fe358d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\DB\MariaDB">
+      <UniqueIdentifier>{37f641ef-d0ee-4924-8c8e-97f38823edd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\rapidjson">
+      <UniqueIdentifier>{7b11455a-b375-43ee-aad3-71e2623ddf39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\rapidjson\error">
+      <UniqueIdentifier>{0cbfdcaf-bdc4-4fdc-864f-aedbb1eabd81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\rapidjson\internal">
+      <UniqueIdentifier>{0825099a-da8d-46b2-b1eb-7d46d4f0e1bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\rapidjson\msinttypes">
+      <UniqueIdentifier>{b8f303d2-bfbb-49e6-8589-fa0daf8875be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Network\Web">
+      <UniqueIdentifier>{449a2a3e-f895-4c66-98f7-558b19eba4cf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Random.h">
+      <Filter>헤더 파일\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.hpp">
+      <Filter>헤더 파일\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>헤더 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseObject.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPoolManager.h">
+      <Filter>헤더 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientBase.h">
+      <Filter>헤더 파일\Network\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerBase.h">
+      <Filter>헤더 파일\Network\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionBase.h">
+      <Filter>헤더 파일\Network\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerManager.h">
+      <Filter>헤더 파일\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpClientBase.h">
+      <Filter>헤더 파일\Network\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpClientSession.h">
+      <Filter>헤더 파일\Network\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpServerBase.h">
+      <Filter>헤더 파일\Network\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpSessionBase.h">
+      <Filter>헤더 파일\Network\Tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="Request.h">
+      <Filter>헤더 파일\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Response.h">
+      <Filter>헤더 파일\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerObject.h">
+      <Filter>헤더 파일\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>헤더 파일\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell.h">
+      <Filter>헤더 파일\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Deserialize.h">
+      <Filter>헤더 파일\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Serialize.h">
+      <Filter>헤더 파일\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="RedisManager.h">
+      <Filter>헤더 파일\DB\Redis</Filter>
+    </ClInclude>
+    <ClInclude Include="MariaDBManager.h">
+      <Filter>헤더 파일\DB\MariaDB</Filter>
+    </ClInclude>
+    <ClInclude Include="DBBaseManager.h">
+      <Filter>헤더 파일\DB</Filter>
+    </ClInclude>
+    <ClInclude Include="YamlParser.hpp">
+      <Filter>헤더 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\allocators.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\cursorstreamwrapper.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\document.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\encodedstream.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\encodings.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\filereadstream.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\filewritestream.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\fwd.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\istreamwrapper.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\memorybuffer.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\memorystream.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\ostreamwrapper.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\pointer.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\prettywriter.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\rapidjson.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\reader.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\schema.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\stream.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\stringbuffer.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\writer.h">
+      <Filter>헤더 파일\rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\error\en.h">
+      <Filter>헤더 파일\rapidjson\error</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\error\error.h">
+      <Filter>헤더 파일\rapidjson\error</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\biginteger.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\clzll.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\diyfp.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\dtoa.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\ieee754.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\itoa.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\meta.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\pow10.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\regex.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\stack.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\strfunc.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\strtod.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\internal\swap.h">
+      <Filter>헤더 파일\rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\msinttypes\inttypes.h">
+      <Filter>헤더 파일\rapidjson\msinttypes</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidjson\msinttypes\stdint.h">
+      <Filter>헤더 파일\rapidjson\msinttypes</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>헤더 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="test.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtocolType.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>헤더 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="httplib.h">
+      <Filter>헤더 파일\Network\Web</Filter>
+    </ClInclude>
+    <ClInclude Include="ExceptionHandler.h">
+      <Filter>헤더 파일\Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Random.cpp">
+      <Filter>소스 파일\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseObject.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerManager.cpp">
+      <Filter>소스 파일\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpClientBase.cpp">
+      <Filter>소스 파일\Network\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpClientSession.cpp">
+      <Filter>소스 파일\Network\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpServerBase.cpp">
+      <Filter>소스 파일\Network\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpSessionBase.cpp">
+      <Filter>소스 파일\Network\Tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerObject.cpp">
+      <Filter>소스 파일\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
+      <Filter>소스 파일\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Deserialize.cpp">
+      <Filter>소스 파일\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Serialize.cpp">
+      <Filter>소스 파일\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="RedisManager.cpp">
+      <Filter>소스 파일\DB\Redis</Filter>
+    </ClCompile>
+    <ClCompile Include="MariaDBManager.cpp">
+      <Filter>소스 파일\DB\MariaDB</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>소스 파일\Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,15 @@
+<root>
+	<cells>
+		<!-- 유저 정보 -->
+		<cell name="UserInfo" base="Cell">
+			<!-- 닉네임 -->
+			<property name="nickname" type="string" base="default" />
+			<!-- 레벨 -->
+			<property name="level" type="int64" base="default" />
+		</cell>
+	</cells>
+	<protocols>
+		<protocol name="PingCheckReq" type="Base.PingCheckReq" base="Request" />
+		<protocol name="PingCheckResp" type="Base.PingCheckResp" base="Response" />
+	</protocols>
+</root>
