@@ -2,6 +2,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,c++,csharp
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,c++,csharp
 
+### Need Libraries###
+!libcrypto-1_1-x64.dll
+!libmariadb.dll
+!libssl-1_1-x64.dll
+
 ### Boost ###
 boost_1_74_0/
 
