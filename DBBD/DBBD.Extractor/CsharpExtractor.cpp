@@ -275,21 +275,31 @@ void CsharpExtractor::writeProtocolContents(std::ofstream& ofs, std::string base
 	ofs << endl;
 	ofs << "\tprivate List<bool> fingerPrinter = new List<bool>();" << endl;
 
-	for (size_t i = 0; i < realContents.size(); i++) {
-		auto info = realContents[i];
+	for (size_t i = 0; i < contentsInfoList.size(); i++) {
+		auto info = contentsInfoList[i];
 
-		string newName = "";
-		for (size_t i = 0; i < info.name.size(); i++) {
-			char c = info.name[i];
-			if (i == 0) {
-				newName += toupper(c);
+		switch (info.fileType) {
+		case XmlElementType::Comment:
+			if (i == contentsInfoList.size() - 1)
+				break;
+
+			ofs << "\t// " << info.value << endl;
+			break;
+		case XmlElementType::Property:
+			string newName = "";
+			for (size_t i = 0; i < info.name.size(); i++) {
+				char c = info.name[i];
+				if (i == 0) {
+					newName += toupper(c);
+				}
+				else {
+					newName += c;
+				}
 			}
-			else {
-				newName += c;
-			}
+
+			ofs << "\tprivate " << getPropertyType(info.type) << " " << info.name << ";" << endl;
+			break;
 		}
-
-		ofs << "\tprivate " << getPropertyType(info.type) << " " << info.name << ";" << endl;
 	}
 }
 

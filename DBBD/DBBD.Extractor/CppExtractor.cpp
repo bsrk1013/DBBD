@@ -299,9 +299,14 @@ void CppExtractor::writeProtocolContents(ofstream& ofs, string base) {
 
 	ofs << "protected:" << endl;
 	ofs << "\tbool fingerPrinter[" << realContents.size() << "] = { false, };" << endl;
-	for (auto info : contentsInfoList) {
+	for (int i = 0; i < contentsInfoList.size(); i++) {
+		auto info = contentsInfoList[i];
+
 		switch (info.fileType) {
 		case XmlElementType::Comment:
+			if (i == contentsInfoList.size() - 1)
+				break;
+
 			ofs << "\t// " << info.value << endl;
 			break;
 		case XmlElementType::Property:
