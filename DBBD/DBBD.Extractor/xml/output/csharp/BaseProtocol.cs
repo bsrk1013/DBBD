@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
+// Test1
 class ServerConnectReq : DBBD.Request
 {
 	public ServerConnectReq()
@@ -28,6 +29,7 @@ class ServerConnectReq : DBBD.Request
 	}
 }
 
+// Test2
 class ServerConnectResp : DBBD.Response
 {
 	public ServerConnectResp()

@@ -5,6 +5,7 @@
 #include "DBBD/Common.hpp"
 #include "ProtocolType.hpp"
 
+// Test1
 class ServerConnectReq : public DBBD::Request {
 public:
 	ServerConnectReq() {
@@ -27,6 +28,7 @@ public:
 	}
 };
 
+// Test2
 class ServerConnectResp : public DBBD::Response {
 public:
 	ServerConnectResp() {

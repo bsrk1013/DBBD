@@ -35,4 +35,5 @@ int main()
 	csharpExtractor.start();
 
 	std::cout << "~~ done ~~\n";
+	std::cin.get();
 }

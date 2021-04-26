@@ -2,7 +2,9 @@
 	<cells>
 	</cells>
 	<protocols>
+    <!-- Test1 -->
 		<protocol name="ServerConnectReq" type="Base.ServerConnectReq" base="Request"/>
+      <!-- Test2 -->
 		<protocol name="ServerConnectResp" type="Base.ServerConnectResp" base="Response">
 			<property name="sessionId" type="int32" base="default"/>
 		</protocol>

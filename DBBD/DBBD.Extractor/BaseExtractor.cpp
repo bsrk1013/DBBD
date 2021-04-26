@@ -167,6 +167,8 @@ void BaseExtractor::parseContents(std::ofstream& ofs, XMLElement* root, std::str
 	auto child = root->FirstChild();
 	XmlElementType type = XmlElementType::None;
 	while (child) {
+		type = XmlElementType::None;
+
 		FileInfo info;
 		if (child->ToComment()) {
 			info.fileType = XmlElementType::Comment;
