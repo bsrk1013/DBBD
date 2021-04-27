@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 
+//Base Protocol
 namespace Base {
 	enum Value {
 		ServerConnectReq = 1001,
@@ -16,6 +17,7 @@ namespace Base {
 		PingCheckResp = 1004,
 	};
 	std::map<Value, std::wstring> stringMap = {
+		{ Value::, L"" },
 		{ Value::ServerConnectReq, L"ServerConnectReq" },
 		{ Value::ServerConnectResp, L"ServerConnectResp" },
 		{ Value::PingCheckReq, L"PingCheckReq" },
@@ -29,19 +31,35 @@ namespace Base {
 		return iter->second;
 	}
 }
-#include <map>
-#include <string>
-
+// Relay Protocol
 namespace Relay {
 	enum Value {
 		RelayNoti = 2001,
 	};
 	std::map<Value, std::wstring> stringMap = {
+		{ Value::, L"" },
 		{ Value::RelayNoti, L"RelayNoti" },
 	};
 	std::wstring Get(Value value) {
 		auto iter = Relay::stringMap.find(value);
 		if (iter == Relay::stringMap.end()) {
+			return "";
+		}
+		return iter->second;
+	}
+}
+// MailType 
+namespace MailType {
+	enum Value {
+		None = 0,
+	};
+	std::map<Value, std::wstring> stringMap = {
+		{ Value::, L"" },
+		{ Value::None, L"None" },
+	};
+	std::wstring Get(Value value) {
+		auto iter = MailType::stringMap.find(value);
+		if (iter == MailType::stringMap.end()) {
 			return "";
 		}
 		return iter->second;

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
- static class Base
+// Base Protocol
+static class Base
 {
 	public enum Value
 	{
@@ -13,13 +14,15 @@ using System.Collections.Generic;
 		PingCheckReq = 1003,
 		PingCheckResp = 1004,
 	}
+
 	private static Dictionary<Value, string> stringMap = new Dictionary<Value, string>
 	{
 		{ Value.ServerConnectReq, "ServerConnectReq" },
 		{ Value.ServerConnectResp, "ServerConnectResp" },
 		{ Value.PingCheckReq, "PingCheckReq" },
 		{ Value.PingCheckResp, "PingCheckResp" },
-	}
+	};
+
 	public static string Get(Value value)
 	{
 		if (!stringMap.ContainsKey(value))
@@ -29,16 +32,41 @@ using System.Collections.Generic;
 		return stringMap[value];
 	}
 }
- static class Relay
+//  Relay Protocol
+static class Relay
 {
 	public enum Value
 	{
 		RelayNoti = 2001,
 	}
+
 	private static Dictionary<Value, string> stringMap = new Dictionary<Value, string>
 	{
 		{ Value.RelayNoti, "RelayNoti" },
+	};
+
+	public static string Get(Value value)
+	{
+		if (!stringMap.ContainsKey(value))
+		{
+			return "";
+		}
+		return stringMap[value];
 	}
+}
+//  MailType 
+static class MailType
+{
+	public enum Value
+	{
+		None = 0,
+	}
+
+	private static Dictionary<Value, string> stringMap = new Dictionary<Value, string>
+	{
+		{ Value.None, "None" },
+	};
+
 	public static string Get(Value value)
 	{
 		if (!stringMap.ContainsKey(value))

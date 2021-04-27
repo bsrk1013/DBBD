@@ -120,6 +120,15 @@ void BaseExtractor::parseXml(std::string fileName) {
 	}
 
 	auto node = doc.FirstChild();
+	auto child = node->FirstChild();
+	if (child != nullptr
+		&& child->ToComment()) {
+		std::string value(child->Value());
+		FileInfo info;
+		info.fileType = XmlElementType::Comment;
+		info.value = trim(value);
+		headerInfoList.push_back(info);
+	}
 	auto childElement = node->FirstChildElement();
 
 	writeHeader(ofs);
@@ -129,6 +138,7 @@ void BaseExtractor::parseXml(std::string fileName) {
 }
 
 void BaseExtractor::parseRoot(std::ofstream& ofs, XMLElement* elem, std::string fileName) {
+	bool isFirst = true;
 	while (elem) {
 		switch (HashCode(elem->Name())) {
 		case HashCode("cells"):
@@ -144,7 +154,7 @@ void BaseExtractor::parseRoot(std::ofstream& ofs, XMLElement* elem, std::string 
 				throw std::exception("consts name is empty");
 			auto constsName = find->Value();
 			parseContents(ofs, elem, fileName);
-			writeConst(ofs, constsName);
+			writeConst(ofs, constsName, isFirst);
 			headerInfoList.clear();
 			break;
 		}
@@ -152,7 +162,17 @@ void BaseExtractor::parseRoot(std::ofstream& ofs, XMLElement* elem, std::string 
 			break;
 		}
 
+		auto child = elem->NextSibling();
+		if (child != nullptr
+			&& child->ToComment()) {
+			FileInfo info;
+			info.fileType = XmlElementType::Comment;
+			info.value = child->Value();
+			headerInfoList.push_back(info);
+		}
 		elem = elem->NextSiblingElement();
+
+		isFirst = false;
 	}
 }
 

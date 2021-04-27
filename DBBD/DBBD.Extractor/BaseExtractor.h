@@ -70,7 +70,7 @@ protected:
 	virtual void writeHeader(std::ofstream& ofs) = 0;
 	virtual void writeCell(std::ofstream& ofs) = 0;
 	virtual void writeProtocol(std::ofstream& ofs) = 0;
-	virtual void writeConst(std::ofstream& ofs, std::string fileName) = 0;
+	virtual void writeConst(std::ofstream& ofs, std::string fileName, bool isFirst) = 0;
 	virtual void writeContentsHeader(std::ofstream& ofs) = 0;
 	virtual void writeCellContents(std::ofstream& ofs) = 0;
 	virtual void writeProtocolContents(std::ofstream& ofs, std::string base) = 0;

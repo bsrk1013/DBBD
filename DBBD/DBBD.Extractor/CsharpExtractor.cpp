@@ -39,24 +39,32 @@ void CsharpExtractor::writeProtocol(std::ofstream& ofs)
 	ofs << "}" << endl;
 }
 
-void CsharpExtractor::writeConst(std::ofstream& ofs, std::string fileName)
+void CsharpExtractor::writeConst(std::ofstream& ofs, std::string fileName, bool isFirst)
 {
-	ofs << " static class " << fileName << endl;
+	auto firstInfo = headerInfoList.front();
+	if (firstInfo.fileType == XmlElementType::Comment)
+		ofs << "// " << firstInfo.value << endl;
+	ofs << "static class " << fileName << endl;
 	ofs << "{" << endl;
 
 	ofs << "\tpublic enum Value" << endl;
 	ofs << "\t{" << endl;
 	for (auto info : headerInfoList) {
+		if (info.fileType == XmlElementType::Comment)
+			continue;
 		ofs << "\t\t" << info.name << " = " << info.value << "," << endl;
 	}
-	ofs << "\t}" << endl;
+	ofs << "\t}" << endl << endl;
 
 	ofs << "\tprivate static Dictionary<Value, string> stringMap = new Dictionary<Value, string>" << endl;
 	ofs << "\t{" << endl;
 	for (auto info : headerInfoList) {
+		if (info.fileType == XmlElementType::Comment)
+			continue;
+
 		ofs << "\t\t{ Value." << info.name << ", \"" << info.name << "\" }," << endl;
 	}
-	ofs << "\t}" << endl;
+	ofs << "\t};" << endl << endl;
 
 	ofs << "\tpublic static string Get(Value value)" << endl;
 	ofs << "\t{" << endl;
@@ -67,7 +75,7 @@ void CsharpExtractor::writeConst(std::ofstream& ofs, std::string fileName)
 	ofs << "\t\treturn stringMap[value];" << endl;
 	ofs << "\t}" << endl;
 
-	ofs << "}" << endl;
+	ofs << "}" << endl << endl;
 }
 
 void CsharpExtractor::writeContentsHeader(std::ofstream& ofs)

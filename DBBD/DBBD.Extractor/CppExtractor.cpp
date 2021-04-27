@@ -37,12 +37,23 @@ void CppExtractor::writeProtocol(ofstream& ofs) {
 	ofs << "};" << endl;
 }
 
-void CppExtractor::writeConst(ofstream& ofs, string fileName) {
-	ofs << "#include <map>" << endl;
-	ofs << "#include <string>" << endl << endl;
+void CppExtractor::writeConst(ofstream& ofs, string fileName, bool isFirst) {
+	if (isFirst) {
+		ofs << "#include <map>" << endl;
+		ofs << "#include <string>" << endl << endl;
+	}
+
+	auto firstInfo = headerInfoList.front();
+	if (firstInfo.fileType == XmlElementType::Comment) {
+		ofs << "//" << firstInfo.value << endl;
+	}
+
 	ofs << "namespace " << fileName << " {" << endl;
 	ofs << "\tenum Value {" << endl;
 	for (auto info : headerInfoList) {
+		if (info.fileType == XmlElementType::Comment)
+			continue;
+
 		ofs << "\t\t" << info.name << " = " << info.value << "," << endl;
 	}
 	ofs << "\t};" << endl;
