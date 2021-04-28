@@ -60,6 +60,8 @@ void CppExtractor::writeConst(ofstream& ofs, string fileName, bool isFirst) {
 
 	ofs << "\tstd::map<Value, std::wstring> stringMap = {" << endl;
 	for (auto info : headerInfoList) {
+		if (info.fileType == XmlElementType::Comment)
+			continue;
 		ofs << "\t\t{ Value::" << info.name << ", L\"" << info.name << "\" }," << endl;
 	}
 	ofs << "\t};" << endl;
