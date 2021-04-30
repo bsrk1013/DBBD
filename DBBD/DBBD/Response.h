@@ -27,7 +27,6 @@ namespace DBBD {
 		virtual unsigned int getLength() {
 			return sizeof(Header);
 		}
-		virtual std::string toString() = 0;
 
 		unsigned int getTypeId() { return typeId; }
 

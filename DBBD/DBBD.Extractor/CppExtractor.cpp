@@ -69,7 +69,7 @@ void CppExtractor::writeConst(ofstream& ofs, string fileName, bool isFirst) {
 	ofs << "\tstd::wstring Get(Value value) {" << endl;
 	ofs << "\t\tauto iter = " << fileName << "::stringMap.find(value);" << endl;
 	ofs << "\t\tif (iter == " << fileName << "::stringMap.end()) {" << endl;
-	ofs << "\t\t\treturn \"\";" << endl;
+	ofs << "\t\t\treturn L\"\";" << endl;
 	ofs << "\t\t}" << endl;
 	ofs << "\t\treturn iter->second;" << endl;
 	ofs << "\t}" << endl;
@@ -157,17 +157,17 @@ void CppExtractor::writeCellContents(ofstream& ofs) {
 	ofs << "\t}" << endl << endl;
 
 	// FIXME 내용물 toString 해줘야함
-	ofs << "\tvirtual std::string toString() { " << endl;
-	if (header.size() <= 0) { ofs << "return \"\";"; }
-	else { 
-		ofs << "\t\treturn \"[" << header[0].name << "] { ";
-		/*for (size_t i = 0; i < realContents.size(); i++) {
-			auto info = realContents[i];
-			ofs << "";
-		}*/
-		ofs << " }\";" << endl;
-	}
-	ofs << "\t}" << endl << endl;
+	//ofs << "\tvirtual std::string toString() { " << endl;
+	//if (header.size() <= 0) { ofs << "return \"\";"; }
+	//else { 
+	//	ofs << "\t\treturn \"[" << header[0].name << "] { ";
+	//	/*for (size_t i = 0; i < realContents.size(); i++) {
+	//		auto info = realContents[i];
+	//		ofs << "";
+	//	}*/
+	//	ofs << " }\";" << endl;
+	//}
+	//ofs << "\t}" << endl << endl;
 
 	ofs << "\tstd::string toJson() {" << endl;
 	ofs << "\t\tnlohmann::json j;" << endl;
@@ -263,7 +263,7 @@ void CppExtractor::writeProtocolContents(ofstream& ofs, string base) {
 	ofs << "\tvirtual void deserialize(DBBD::Buffer& buffer) {" << endl;
 	ofs << "\t\tDBBD::" << base << "::readHeader(buffer);" << endl;
 	if (realContents.size() > 0) {
-		ofs << "\t\tDBBD::Serialize::readArray(buffer, fingerPrinter);" << endl;
+		ofs << "\t\tDBBD::Deserialize::readArray(buffer, fingerPrinter);" << endl;
 		for (size_t i = 0; i < realContents.size(); i++) {
 			auto info = realContents[i];
 			ofs << "\t\tif (fingerPrinter[" << i << "]) { " << getDeSerialize(info.base, info.type, info.name, false) << " }" << endl;
