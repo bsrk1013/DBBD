@@ -10,7 +10,7 @@ namespace DBBD
         public static void Read(Buffer buffer, out char value)
         {
             byte[] block = buffer.ReadByteBlock(1);
-            value = BitConverter.ToChar(block);
+            value = BitConverter.ToChar(block, 0);
         }
 
         public static void Read(Buffer buffer, out byte value)
@@ -28,55 +28,55 @@ namespace DBBD
         public static void Read(Buffer buffer, out bool value)
         {
             byte[] block = buffer.ReadByteBlock(1);
-            value = BitConverter.ToBoolean(block);
+            value = BitConverter.ToBoolean(block, 0);
         }
 
         public static void Read(Buffer buffer, out short value)
         {
             byte[] block = buffer.ReadByteBlock(sizeof(short));
-            value = BitConverter.ToInt16(block);
+            value = BitConverter.ToInt16(block, 0);
         }
 
         public static void Read(Buffer buffer, out ushort value)
         {
             byte[] block = buffer.ReadByteBlock(sizeof(ushort));
-            value = BitConverter.ToUInt16(block);
+            value = BitConverter.ToUInt16(block, 0);
         }
 
         public static void Read(Buffer buffer, out int value)
         {
             byte[] block = buffer.ReadByteBlock(sizeof(int));
-            value = BitConverter.ToInt32(block);
+            value = BitConverter.ToInt32(block, 0);
         }
 
         public static void Read(Buffer buffer, out uint value)
         {
             byte[] block = buffer.ReadByteBlock(sizeof(uint));
-            value = BitConverter.ToUInt32(block);
+            value = BitConverter.ToUInt32(block, 0);
         }
 
         public static void Read(Buffer buffer, out long value)
         {
             byte[] block = buffer.ReadByteBlock(sizeof(long));
-            value = BitConverter.ToInt64(block);
+            value = BitConverter.ToInt64(block, 0);
         }
 
         public static void Read(Buffer buffer, out ulong value)
         {
             byte[] block = buffer.ReadByteBlock(sizeof(ulong));
-            value = BitConverter.ToUInt64(block);
+            value = BitConverter.ToUInt64(block, 0);
         }
 
         public static void Read(Buffer buffer, out float value)
         {
             byte[] block = buffer.ReadByteBlock(sizeof(float));
-            value = BitConverter.ToSingle(block);
+            value = BitConverter.ToSingle(block, 0);
         }
 
         public static void Read(Buffer buffer, out double value)
         {
             byte[] block = buffer.ReadByteBlock(sizeof(double));
-            value = BitConverter.ToDouble(block);
+            value = BitConverter.ToDouble(block, 0);
         }
 
         public static void Read(Buffer buffer, out string value)
@@ -101,9 +101,7 @@ namespace DBBD
         #region List
         public static void Read(Buffer buffer, out List<char> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<char>((int)size);
             for(int i = 0; i < size; i++)
             {
@@ -114,9 +112,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<byte> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<byte>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -127,9 +123,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<sbyte> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<sbyte>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -140,9 +134,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<bool> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<bool>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -153,9 +145,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<short> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<short>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -166,9 +156,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<ushort> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<ushort>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -179,9 +167,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<int> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<int>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -192,9 +178,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<uint> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<uint>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -205,9 +189,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<long> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<long>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -218,9 +200,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<ulong> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<ulong>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -231,9 +211,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<float> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<float>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -244,9 +222,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<double> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<double>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -257,9 +233,7 @@ namespace DBBD
 
         public static void Read(Buffer buffer, out List<string> values)
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<string>((int)size);
             for (int i = 0; i < size; i++)
             {
@@ -271,9 +245,7 @@ namespace DBBD
         public static void Read<T>(Buffer buffer, out List<T> values)
             where T : ICell, new()
         {
-            byte[] sizeBlock = buffer.ReadByteBlock(sizeof(uint));
-            uint size = BitConverter.ToUInt32(sizeBlock);
-
+            Read(buffer, out uint size);
             values = new List<T>((int)size);
             for (int i = 0; i < size; i++)
             {

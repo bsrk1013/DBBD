@@ -139,7 +139,7 @@ void CsharpExtractor::writeCellContents(std::ofstream& ofs)
 		if (headerInfo.fileType == XmlElementType::Cell) { header.push_back(headerInfo); break; }
 	}
 
-	ofs << "\tpublic void Serialize(DBBD.Buffer buffer)" << endl;
+	ofs << "\tpublic override void Serialize(DBBD.Buffer buffer)" << endl;
 	ofs << "\t{" << endl;
 	if (realContents.size() > 0) {
 		ofs << "\t\tDBBD.Serizlie.Write(buffer, fingerPrinter);" << endl;
@@ -150,7 +150,7 @@ void CsharpExtractor::writeCellContents(std::ofstream& ofs)
 	}
 	ofs << "\t}" << endl << endl;
 
-	ofs << "\tpublic void Deserialize(DBBD.Buffer buffer)" << endl;
+	ofs << "\tpublic override void Deserialize(DBBD.Buffer buffer)" << endl;
 	ofs << "\t{" << endl;
 	if (realContents.size() > 0) {
 		ofs << "\t\tDBBD.Deserialize.Read(buffer, out fingerPrinter);" << endl;
@@ -161,7 +161,7 @@ void CsharpExtractor::writeCellContents(std::ofstream& ofs)
 	}
 	ofs << "\t}" << endl << endl;
 
-	ofs << "\tpublic uint GetLength()" << endl;
+	ofs << "\tpublic override uint GetLength()" << endl;
 	ofs << "\t{" << endl;
 	ofs << "\t\tuint totalLength = 0;" << endl;
 	if (realContents.size() > 0) {
@@ -234,7 +234,7 @@ void CsharpExtractor::writeProtocolContents(std::ofstream& ofs, std::string base
 	}
 	ofs << "\t}" << endl << endl;
 
-	ofs << "\tpublic void Deserialize(DBBD.Buffer buffer)" << endl;
+	ofs << "\tpublic override void Deserialize(DBBD.Buffer buffer)" << endl;
 	ofs << "\t{" << endl;
 	ofs << "\t\tbase.ReadHeader(buffer);" << endl;
 	if (realContents.size() > 0) {
@@ -246,7 +246,7 @@ void CsharpExtractor::writeProtocolContents(std::ofstream& ofs, std::string base
 	}
 	ofs << "\t}" << endl << endl;
 
-	ofs << "\tpublic uint GetLength()" << endl;
+	ofs << "\tpublic override uint GetLength()" << endl;
 	ofs << "\t{" << endl;
 	ofs << "\t\tuint totalLength = 0;" << endl;
 	if (realContents.size() > 0) {

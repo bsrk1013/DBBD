@@ -35,6 +35,8 @@ namespace DBBD
 
         public override void Stop()
         {
+            session.Stop();
+            DisconnectInternal();
         }
 
         public override void Send(ICell data)
@@ -61,6 +63,8 @@ namespace DBBD
 
                 session = new TcpClientSession((Socket)e.UserToken, 8192, ReadInternal);
                 session.Start();
+
+                StartInternal();
             }
             else
             {
