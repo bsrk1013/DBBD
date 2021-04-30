@@ -249,8 +249,9 @@ void CsharpExtractor::writeProtocolContents(std::ofstream& ofs, std::string base
 	ofs << "\tpublic override uint GetLength()" << endl;
 	ofs << "\t{" << endl;
 	ofs << "\t\tuint totalLength = 0;" << endl;
+	ofs << "\t\ttotalLength += (uint)(base.GetLength());" << endl;
 	if (realContents.size() > 0) {
-		ofs << "\t\ttotalLength += (uint)(base.GetLength() + sizeof(uint) + fingerPrinter.Count);" << endl;
+		ofs << "\t\ttotalLength += (uint)(sizeof(uint) + fingerPrinter.Count);" << endl;
 		for (size_t i = 0; i < realContents.size(); i++) {
 			auto info = realContents[i];
 			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += (uint)(" << getLength(info.type, info.name) << "); }" << endl;
