@@ -13,6 +13,7 @@ namespace DBBD {
 			char* dataBuffer = buffer.readByteBlock(sizeof(T));
 			memcpy(&value, dataBuffer, sizeof(T));
 		}
+		static void read(Buffer& buffer, float& value);
 		static void read(Buffer& buffer, std::string& value);
 		static void read(Buffer& buffer, std::wstring& value);
 		static void read(Buffer& buffer, char* value);

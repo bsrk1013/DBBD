@@ -1,5 +1,12 @@
 #pragma once
 namespace DBBD {
+
+	typedef union
+	{
+		float value;
+		char  array[4];
+	} union_float;
+
 	class Serialize;
 	class Deserialize;
 	class Buffer;

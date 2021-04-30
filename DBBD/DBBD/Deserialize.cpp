@@ -3,6 +3,16 @@
 #include "Common.hpp"
 
 namespace DBBD {
+	void Deserialize::read(Buffer& buffer, float& value) {
+		char* dataBuffer = buffer.readByteBlock(4);
+		union_float uFloat;
+		for (int i = 0; i < 4; i++) {
+			uFloat.array[i] = dataBuffer[i];
+		}
+
+		value = uFloat.value;
+	}
+
 	void Deserialize::read(Buffer& buffer, std::string& value) {
 		unsigned int strSize;
 		read(buffer, strSize);

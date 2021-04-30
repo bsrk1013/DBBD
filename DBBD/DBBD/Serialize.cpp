@@ -2,6 +2,15 @@
 #include "Common.hpp"
 
 namespace DBBD {
+	void Serialize::write(Buffer& buffer, const float& value) {
+		union_float uFloat;
+		uFloat.value = value;
+		for (unsigned int i = 0; i < 4; i++) {
+			char data = uFloat.array[i];
+			buffer.putByte(data);
+		}
+	}
+
 	void Serialize::write(Buffer& buffer, const std::string& value) {
 		unsigned int strSize = (unsigned int)value.length();
 		write(buffer, strSize);

@@ -17,6 +17,7 @@ namespace DBBD
 				buffer.putByte(data);
 			}
 		}
+		static void write(Buffer& buffer, const float& value);
 		static void write(Buffer& buffer, const std::string& value);
 		static void write(Buffer& buffer, const std::wstring& value);
 		static void write(Buffer& buffer, char* const& value);
