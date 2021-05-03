@@ -1,6 +1,7 @@
 #include <boost/bind.hpp>
 #include "TcpSessionBase.h"
 #include "Serialize.h"
+#include "Log.h"
 
 DBBD::TcpSessionBase::TcpSessionBase(IoContextSP context, SocketSP socket, unsigned int bufferSize)
 {
@@ -87,6 +88,7 @@ void DBBD::TcpSessionBase::handleRead(const boost::system::error_code& error, un
 		}
 
 		readInternal(header);
+		readBuffer->adjust();
 	}
 
 	read();
@@ -110,7 +112,7 @@ void DBBD::TcpSessionBase::handleWrite(const boost::system::error_code& error, u
 		stop();
 		return;
 	}
-	
+
 	writeBuffer->setBufferOffset(writeBuffer->getBufferOffset() + bytesTransferred);
 	writeBuffer->adjust();
 }
