@@ -47,7 +47,7 @@ std::filesystem::path BaseExtractor::getOutputFileName(std::string fileName) {
 	return baseOutputPath / outputName / newFileName;
 }
 
-std::string BaseExtractor::getPropertyType(std::string type) {
+std::string BaseExtractor::getPropertyType(std::string base, std::string type) {
 	switch (HashCode(type.c_str())) {
 	case HashCode("string"):
 		if (this->type == ExtractorType::Cpp) { return "std::wstring"; }
@@ -102,6 +102,14 @@ std::string BaseExtractor::getPropertyType(std::string type) {
 		else if (this->type == ExtractorType::Csharp) { return "sbyte"; }
 		break;
 	default:
+		if (strcmp(base.c_str(), "cell") == 0
+			|| strcmp(base.c_str(), "Cell") == 0) {
+			return type;
+		}
+		else {
+			std::string msg = "illegal type and base, type: " + type + ", base: " + base;
+			new std::exception(msg.c_str());
+		}
 		break;
 	}
 }

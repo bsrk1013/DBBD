@@ -4,6 +4,72 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
+class TestInfo : DBBD.I
+{
+	public TestInfo()
+	{
+		fingerPrinter.AddRange(Enumerable.Repeat(false, 1));
+	}
+
+	public override void Serialize(DBBD.Buffer buffer)
+	{
+		DBBD.Serizlie.Write(buffer, fingerPrinter);
+		if (fingerPrinter[0]) { DBBD.Serialize.Write(buffer, a); }
+	}
+
+	public override void Deserialize(DBBD.Buffer buffer)
+	{
+		DBBD.Deserialize.Read(buffer, out fingerPrinter);
+		if (fingerPrinter[0]) { DBBD.Deserialize.Read(buffer, out a); }
+	}
+
+	public override uint GetLength()
+	{
+		uint totalLength = 0;
+		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
+		if (fingerPrinter[0]) { totalLength += (uint)(sizeof(int)); }
+		return totalLength;
+	}
+
+	public int A { get { return a; } set { a = value; fingerPrinter[0] = true; } }
+
+	private List<bool> fingerPrinter = new List<bool>();
+	private int a;
+}
+
+class TestInfo2 : DBBD.I
+{
+	public TestInfo2()
+	{
+		fingerPrinter.AddRange(Enumerable.Repeat(false, 1));
+	}
+
+	public override void Serialize(DBBD.Buffer buffer)
+	{
+		DBBD.Serizlie.Write(buffer, fingerPrinter);
+		if (fingerPrinter[0]) { DBBD.Serialize.Write(buffer, b); }
+	}
+
+	public override void Deserialize(DBBD.Buffer buffer)
+	{
+		DBBD.Deserialize.Read(buffer, out fingerPrinter);
+		if (fingerPrinter[0]) { DBBD.Deserialize.Read(buffer, out b); }
+	}
+
+	public override uint GetLength()
+	{
+		uint totalLength = 0;
+		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
+		if (fingerPrinter[0]) { totalLength += (uint)(b.GetLength()); }
+		return totalLength;
+	}
+
+	public TestInfo B { get { return b; } set { b = value; fingerPrinter[0] = true; } }
+
+	private List<bool> fingerPrinter = new List<bool>();
+	private TestInfo b;
+}
+
 // Test1
 class ServerConnectReq : DBBD.Request
 {
@@ -17,14 +83,15 @@ class ServerConnectReq : DBBD.Request
 		base.WriteHeader(buffer, GetLength());
 	}
 
-	public void Deserialize(DBBD.Buffer buffer)
+	public override void Deserialize(DBBD.Buffer buffer)
 	{
 		base.ReadHeader(buffer);
 	}
 
-	public uint GetLength()
+	public override uint GetLength()
 	{
 		uint totalLength = 0;
+		totalLength += (uint)(base.GetLength());
 		return totalLength;
 	}
 }
@@ -45,17 +112,18 @@ class ServerConnectResp : DBBD.Response
 		if (fingerPrinter[0]) { DBBD.Serialize.Write(buffer, sessionId); }
 	}
 
-	public void Deserialize(DBBD.Buffer buffer)
+	public override void Deserialize(DBBD.Buffer buffer)
 	{
 		base.ReadHeader(buffer);
 		DBBD.Deserialize.Read(buffer, out fingerPrinter);
 		if (fingerPrinter[0]) { DBBD.Deserialize.Read(buffer, out sessionId); }
 	}
 
-	public uint GetLength()
+	public override uint GetLength()
 	{
 		uint totalLength = 0;
-		totalLength += (uint)(base.GetLength() + sizeof(uint) + fingerPrinter.Count);
+		totalLength += (uint)(base.GetLength());
+		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
 		if (fingerPrinter[0]) { totalLength += (uint)(sizeof(int)); }
 		return totalLength;
 	}
@@ -90,7 +158,7 @@ class RelayNoti : DBBD.Request
 		if (fingerPrinter[9]) { DBBD.Serialize.Write(buffer, floatValue04); }
 	}
 
-	public void Deserialize(DBBD.Buffer buffer)
+	public override void Deserialize(DBBD.Buffer buffer)
 	{
 		base.ReadHeader(buffer);
 		DBBD.Deserialize.Read(buffer, out fingerPrinter);
@@ -106,10 +174,11 @@ class RelayNoti : DBBD.Request
 		if (fingerPrinter[9]) { DBBD.Deserialize.Read(buffer, out floatValue04); }
 	}
 
-	public uint GetLength()
+	public override uint GetLength()
 	{
 		uint totalLength = 0;
-		totalLength += (uint)(base.GetLength() + sizeof(uint) + fingerPrinter.Count);
+		totalLength += (uint)(base.GetLength());
+		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
 		if (fingerPrinter[0]) { totalLength += (uint)(sizeof(int)); }
 		if (fingerPrinter[1]) { totalLength += (uint)(sizeof(int)); }
 		if (fingerPrinter[2]) { totalLength += (uint)(sizeof(int)); }

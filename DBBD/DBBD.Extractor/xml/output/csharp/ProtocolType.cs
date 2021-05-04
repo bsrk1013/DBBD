@@ -32,6 +32,7 @@ static class Base
 		return stringMap[value];
 	}
 }
+
 //  Relay Protocol
 static class Relay
 {
@@ -54,6 +55,7 @@ static class Relay
 		return stringMap[value];
 	}
 }
+
 //  MailType 
 static class MailType
 {
@@ -76,3 +78,4 @@ static class MailType
 		return stringMap[value];
 	}
 }
+

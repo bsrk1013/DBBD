@@ -17,5 +17,5 @@ protected:
 
 private:
 	std::string getDeSerialize(std::string base, std::string type, std::string name, bool isSerialize);
-	std::string getLength(std::string type, std::string name);
+	std::string getLength(std::string base, std::string type, std::string name);
 };

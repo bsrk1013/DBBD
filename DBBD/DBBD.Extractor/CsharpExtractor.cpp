@@ -168,7 +168,7 @@ void CsharpExtractor::writeCellContents(std::ofstream& ofs)
 		ofs << "\t\ttotalLength += (uint)(sizeof(uint) + fingerPrinter.Count);" << endl;
 		for (size_t i = 0; i < realContents.size(); i++) {
 			auto info = realContents[i];
-			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += (uint)(" << getLength(info.type, info.name) << "); }" << endl;
+			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += (uint)(" << getLength(info.base, info.type, info.name) << "); }" << endl;
 		}
 	}
 	ofs << "\t\treturn totalLength;" << endl;
@@ -190,7 +190,7 @@ void CsharpExtractor::writeCellContents(std::ofstream& ofs)
 			}
 		}
 
-		ofs << "\tpublic " << getPropertyType(info.type) << " " << newName << " { get { return " << info.name << "; } set { " << info.name << " = value; fingerPrinter[" << i << "] = true; } }" << endl;
+		ofs << "\tpublic " << getPropertyType(info.base, info.type) << " " << newName << " { get { return " << info.name << "; } set { " << info.name << " = value; fingerPrinter[" << i << "] = true; } }" << endl;
 	}
 
 	ofs << endl;
@@ -210,7 +210,7 @@ void CsharpExtractor::writeCellContents(std::ofstream& ofs)
 			}
 		}
 
-		ofs << "\tprivate " << getPropertyType(info.type) << " " << info.name << ";" << endl;
+		ofs << "\tprivate " << getPropertyType(info.base, info.type) << " " << info.name << ";" << endl;
 	}
 }
 
@@ -254,7 +254,7 @@ void CsharpExtractor::writeProtocolContents(std::ofstream& ofs, std::string base
 		ofs << "\t\ttotalLength += (uint)(sizeof(uint) + fingerPrinter.Count);" << endl;
 		for (size_t i = 0; i < realContents.size(); i++) {
 			auto info = realContents[i];
-			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += (uint)(" << getLength(info.type, info.name) << "); }" << endl;
+			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += (uint)(" << getLength(info.base, info.type, info.name) << "); }" << endl;
 		}
 	}
 	ofs << "\t\treturn totalLength;" << endl;
@@ -278,7 +278,7 @@ void CsharpExtractor::writeProtocolContents(std::ofstream& ofs, std::string base
 			}
 		}
 
-		ofs << "\tpublic " << getPropertyType(info.type) << " " << newName << " { get { return " << info.name << "; } set { " << info.name << " = value; fingerPrinter[" << i << "] = true; } }" << endl;
+		ofs << "\tpublic " << getPropertyType(info.base, info.type) << " " << newName << " { get { return " << info.name << "; } set { " << info.name << " = value; fingerPrinter[" << i << "] = true; } }" << endl;
 	}
 
 	ofs << endl;
@@ -306,13 +306,13 @@ void CsharpExtractor::writeProtocolContents(std::ofstream& ofs, std::string base
 				}
 			}
 
-			ofs << "\tprivate " << getPropertyType(info.type) << " " << info.name << ";" << endl;
+			ofs << "\tprivate " << getPropertyType(info.base, info.type) << " " << info.name << ";" << endl;
 			break;
 		}
 	}
 }
 
-string CsharpExtractor::getLength(string type, string name) {
+string CsharpExtractor::getLength(string base, string type, string name) {
 	switch (HashCode(type.c_str())) {
 	case HashCode("int64"):
 	case HashCode("uint64"):
@@ -326,10 +326,10 @@ string CsharpExtractor::getLength(string type, string name) {
 	case HashCode("char"):
 	case HashCode("byte"):
 	case HashCode("sbyte"):
-		return "sizeof(" + getPropertyType(type) + ")";
+		return "sizeof(" + getPropertyType(base, type) + ")";
 		break;
 	case HashCode("string"):
-		return "sizeof(" + getPropertyType("uint32") + ") + Encoding.UTF8.GetByteCount(" + name + ")";
+		return "sizeof(" + getPropertyType(base, "uint32") + ") + Encoding.UTF8.GetByteCount(" + name + ")";
 	default:
 		return name + ".GetLength()";
 	}

@@ -12,7 +12,6 @@ public:
 
 	virtual ~UserInfo() {}
 
-
 public:
 	virtual void serialize(DBBD::Buffer& buffer) {
 		DBBD::Serialize::writeArray(buffer, fingerPrinter);
@@ -32,10 +31,6 @@ public:
 		if (fingerPrinter[0]) { totalLength += sizeof(unsigned int) + (nickname.size() * sizeof(wchar_t)); }
 		if (fingerPrinter[1]) { totalLength += sizeof(__int64); }
 		return totalLength;
-	}
-
-	virtual std::string toString() { 
-		return "[UserInfo] {  }";
 	}
 
 	std::string toJson() {
@@ -78,7 +73,6 @@ public:
 
 	virtual ~PingCheckReq() {}
 
-
 public:
 	virtual void serialize(DBBD::Buffer& buffer) {
 		DBBD::Request::writeHeader(buffer, getLength());
@@ -99,7 +93,6 @@ public:
 	}
 
 	virtual ~PingCheckResp() {}
-
 
 public:
 	virtual void serialize(DBBD::Buffer& buffer) {

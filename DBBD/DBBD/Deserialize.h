@@ -25,7 +25,6 @@ namespace DBBD {
 		static void readArray(Buffer& buffer, T(&values)[size]) {
 			unsigned int arraySize;
 			read(buffer, arraySize);
-			//values = new T[arraySize];
 			for (unsigned int i = 0; i < arraySize; i++) {
 				T value;
 				read(buffer, value);
@@ -33,6 +32,14 @@ namespace DBBD {
 			}
 		}
 		template<typename T1, typename T2>
-		static void readVector(Buffer& buffer, T1& vec);
+		static void readVector(Buffer& buffer, T1& vec) {
+			unsigned int vecSize;
+			read(buffer, vecSize);
+			for (unsigned int i = 0; i < vecSize; i++) {
+				T2 value;
+				read(buffer, value);
+				vec.push_back(value);
+			}
+		}
 	};
 }

@@ -18,5 +18,5 @@ protected:
 	virtual void writeProtocolContents(std::ofstream& ofs, std::string base);
 
 private:
-	std::string getLength(std::string type, std::string name);
+	std::string getLength(std::string base, std::string type, std::string name);
 };

@@ -1,5 +1,11 @@
 <root>
 	<cells>
+		<cell name="TestInfo">
+			<property name="a" type="int32" base="default"/>
+		</cell>
+		<cell name="TestInfo2">
+			<property name="b" type="TestInfo" base="cell"/>
+		</cell>
 	</cells>
 	<protocols>
     <!-- Test1 -->

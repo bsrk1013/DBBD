@@ -78,7 +78,7 @@ protected:
 protected:
 	std::filesystem::path getOutputPath();
 	std::filesystem::path getOutputFileName(std::string fileName);
-	std::string getPropertyType(std::string type);
+	std::string getPropertyType(std::string base, std::string type);
 
 private:
 	void parseXml(std::string fileName);

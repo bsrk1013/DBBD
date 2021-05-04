@@ -103,7 +103,7 @@ void CppExtractor::writeContentsHeader(ofstream& ofs) {
 			}
 			ofs << endl;
 
-			ofs << "\t" << "virtual ~" << info.name << "() {}" << endl << endl;
+			ofs << "\t" << "virtual ~" << info.name << "() {}" << endl;
 			break;
 		}
 		}
@@ -150,7 +150,7 @@ void CppExtractor::writeCellContents(ofstream& ofs) {
 		ofs << "\t\ttotalLength += sizeof(unsigned int) + sizeof(fingerPrinter);" << endl;
 		for (size_t i = 0; i < realContents.size(); i++) {
 			auto info = realContents[i];
-			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += " << getLength(info.type, info.name) << "; }" << endl;
+			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += " << getLength(info.base, info.type, info.name) << "; }" << endl;
 		}
 	}
 	ofs << "\t\treturn totalLength;" << endl;
@@ -195,7 +195,7 @@ void CppExtractor::writeCellContents(ofstream& ofs) {
 			ofs << "\t\t\t" << info.name << " = DBBD::utf8ToUni(utf8);" << endl;
 		}
 		else {
-			ofs << "\t\t\t" << info.name << " = " << "j[\"" << info.name << "\"].get<" << getPropertyType(info.type) << ">();" << endl;
+			ofs << "\t\t\t" << info.name << " = " << "j[\"" << info.name << "\"].get<" << getPropertyType(info.base, info.type) << ">();" << endl;
 		}
 		ofs << "\t\t}" << endl;
 	}
@@ -220,8 +220,8 @@ void CppExtractor::writeCellContents(ofstream& ofs) {
 			}
 		}
 
-		ofs << "\t" << getPropertyType(info.type) << " get" << newName << "() { return " << info.name << "; }" << endl;
-		ofs << "\tvoid set" << newName << "(" << getPropertyType(info.type) << " value) { ";
+		ofs << "\t" << getPropertyType(info.base, info.type) << " get" << newName << "() { return " << info.name << "; }" << endl;
+		ofs << "\tvoid set" << newName << "(" << getPropertyType(info.base, info.type) << " value) { ";
 		ofs << info.name << " = value; ";
 		ofs << "fingerPrinter[" << i << "] = true; }" << endl;
 	}
@@ -235,7 +235,7 @@ void CppExtractor::writeCellContents(ofstream& ofs) {
 			ofs << "\t// " << info.value << endl;
 			break;
 		case XmlElementType::Property:
-			ofs << "\t" << getPropertyType(info.type) << " " << info.name << ";" << endl;
+			ofs << "\t" << getPropertyType(info.base, info.type) << " " << info.name << ";" << endl;
 			break;
 		}
 	}
@@ -277,7 +277,7 @@ void CppExtractor::writeProtocolContents(ofstream& ofs, string base) {
 		ofs << "\t\ttotalLength += sizeof(unsigned int) + sizeof(fingerPrinter);" << endl;
 		for (size_t i = 0; i < realContents.size(); i++) {
 			auto info = realContents[i];
-			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += " << getLength(info.type, info.name) << "; }" << endl;
+			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += " << getLength(info.base, info.type, info.name) << "; }" << endl;
 		}
 	}
 	ofs << "\t\treturn totalLength;" << endl;
@@ -302,8 +302,8 @@ void CppExtractor::writeProtocolContents(ofstream& ofs, string base) {
 			}
 		}
 
-		ofs << "\t" << getPropertyType(info.type) << " get" << newName << "() { return " << info.name << "; }" << endl;
-		ofs << "\tvoid set" << newName << "(" << getPropertyType(info.type) << " value) {" << endl;
+		ofs << "\t" << getPropertyType(info.base, info.type) << " get" << newName << "() { return " << info.name << "; }" << endl;
+		ofs << "\tvoid set" << newName << "(" << getPropertyType(info.base, info.type) << " value) {" << endl;
 		ofs << "\t\t" << info.name << " = value;" << endl;
 		ofs << "\t\t" << "fingerPrinter[" << i << "] = true;" << endl;
 		ofs << "\t}" << endl;
@@ -323,7 +323,7 @@ void CppExtractor::writeProtocolContents(ofstream& ofs, string base) {
 			ofs << "\t// " << info.value << endl;
 			break;
 		case XmlElementType::Property:
-			ofs << "\t" << getPropertyType(info.type) << " " << info.name << ";" << endl;
+			ofs << "\t" << getPropertyType(info.base, info.type) << " " << info.name << ";" << endl;
 			break;
 		}
 	}
@@ -358,7 +358,7 @@ string CppExtractor::getDeSerialize(string base, string type, string name, bool 
 	}
 }
 
-string CppExtractor::getLength(string type, string name) {
+string CppExtractor::getLength(string base, string type, string name) {
 	switch (HashCode(type.c_str())) {
 	case HashCode("int64"):
 	case HashCode("uint64"):
@@ -372,7 +372,7 @@ string CppExtractor::getLength(string type, string name) {
 	case HashCode("char"):
 	case HashCode("byte"):
 	case HashCode("sbyte"):
-		return "sizeof(" + getPropertyType(type) + ")";
+		return "sizeof(" + getPropertyType(base, type) + ")";
 		break;
 	case HashCode("string"):
 		return "sizeof(unsigned int) + (" + name + ".size() * sizeof(wchar_t))";

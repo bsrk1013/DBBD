@@ -5,6 +5,98 @@
 #include "DBBD/Common.hpp"
 #include "ProtocolType.hpp"
 
+class TestInfo : public DBBD:: {
+public:
+	TestInfo() {}
+
+	virtual ~TestInfo() {}
+
+public:
+	virtual void serialize(DBBD::Buffer& buffer) {
+		DBBD::Serialize::writeArray(buffer, fingerPrinter);
+		if (fingerPrinter[0]) { DBBD::Serialize::write(buffer, a); }
+	}
+
+	virtual void deserialize(DBBD::Buffer& buffer) {
+		DBBD::Deserialize::readArray(buffer, fingerPrinter);
+		if (fingerPrinter[0]) { DBBD::Deserialize::read(buffer, a); }
+	}
+
+	virtual unsigned int getLength() {
+		unsigned int totalLength = 0;
+		totalLength += sizeof(unsigned int) + sizeof(fingerPrinter);
+		if (fingerPrinter[0]) { totalLength += sizeof(int); }
+		return totalLength;
+	}
+
+	std::string toJson() {
+		nlohmann::json j;
+		if (fingerPrinter[0]) { j["a"] = a; }
+		return j.dump();
+	}
+
+	void fromJson(std::string rawJson) {
+		nlohmann::json j = nlohmann::json::parse(rawJson);
+		if (!j["a"].is_null()) {
+			a = j["a"].get<int>();
+		}
+	}
+
+public:
+	int getA() { return a; }
+	void setA(int value) { a = value; fingerPrinter[0] = true; }
+
+protected:
+	bool fingerPrinter[1] = { false, };
+	int a;
+};
+
+class TestInfo2 : public DBBD:: {
+public:
+	TestInfo2() {}
+
+	virtual ~TestInfo2() {}
+
+public:
+	virtual void serialize(DBBD::Buffer& buffer) {
+		DBBD::Serialize::writeArray(buffer, fingerPrinter);
+		if (fingerPrinter[0]) { DBBD::Serialize::write(buffer, dynamic_cast<DBBD::Cell*>(&b); }
+	}
+
+	virtual void deserialize(DBBD::Buffer& buffer) {
+		DBBD::Deserialize::readArray(buffer, fingerPrinter);
+		if (fingerPrinter[0]) { DBBD::Deserialize::read(buffer, dynamic_cast<DBBD::Cell*>(&b); }
+	}
+
+	virtual unsigned int getLength() {
+		unsigned int totalLength = 0;
+		totalLength += sizeof(unsigned int) + sizeof(fingerPrinter);
+		if (fingerPrinter[0]) { totalLength += b.getLength(); }
+		return totalLength;
+	}
+
+	std::string toJson() {
+		nlohmann::json j;
+		if (fingerPrinter[0]) { j["b"] = b; }
+		return j.dump();
+	}
+
+	void fromJson(std::string rawJson) {
+		nlohmann::json j = nlohmann::json::parse(rawJson);
+		if (!j["b"].is_null()) {
+			b = j["b"].get<TestInfo>();
+		}
+	}
+
+public:
+	TestInfo getB() { return b; }
+	void setB(TestInfo value) { b = value; fingerPrinter[0] = true; }
+
+protected:
+	bool fingerPrinter[1] = { false, };
+	TestInfo b;
+};
+
 // Test1
 class ServerConnectReq : public DBBD::Request {
 public:
@@ -13,7 +105,6 @@ public:
 	}
 
 	virtual ~ServerConnectReq() {}
-
 
 public:
 	virtual void serialize(DBBD::Buffer& buffer) {
@@ -37,7 +128,6 @@ public:
 
 	virtual ~ServerConnectResp() {}
 
-
 public:
 	virtual void serialize(DBBD::Buffer& buffer) {
 		DBBD::Response::writeHeader(buffer, getLength());
@@ -46,7 +136,7 @@ public:
 	}
 	virtual void deserialize(DBBD::Buffer& buffer) {
 		DBBD::Response::readHeader(buffer);
-		DBBD::Serialize::readArray(buffer, fingerPrinter);
+		DBBD::Deserialize::readArray(buffer, fingerPrinter);
 		if (fingerPrinter[0]) { DBBD::Deserialize::read(buffer, sessionId); }
 	}
 	virtual unsigned int getLength() {
@@ -76,7 +166,6 @@ public:
 
 	virtual ~RelayNoti() {}
 
-
 public:
 	virtual void serialize(DBBD::Buffer& buffer) {
 		DBBD::Request::writeHeader(buffer, getLength());
@@ -94,7 +183,7 @@ public:
 	}
 	virtual void deserialize(DBBD::Buffer& buffer) {
 		DBBD::Request::readHeader(buffer);
-		DBBD::Serialize::readArray(buffer, fingerPrinter);
+		DBBD::Deserialize::readArray(buffer, fingerPrinter);
 		if (fingerPrinter[0]) { DBBD::Deserialize::read(buffer, userId); }
 		if (fingerPrinter[1]) { DBBD::Deserialize::read(buffer, relayType); }
 		if (fingerPrinter[2]) { DBBD::Deserialize::read(buffer, intValue01); }

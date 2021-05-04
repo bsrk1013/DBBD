@@ -17,7 +17,6 @@ namespace Base {
 		PingCheckResp = 1004,
 	};
 	std::map<Value, std::wstring> stringMap = {
-		{ Value::, L"" },
 		{ Value::ServerConnectReq, L"ServerConnectReq" },
 		{ Value::ServerConnectResp, L"ServerConnectResp" },
 		{ Value::PingCheckReq, L"PingCheckReq" },
@@ -26,7 +25,7 @@ namespace Base {
 	std::wstring Get(Value value) {
 		auto iter = Base::stringMap.find(value);
 		if (iter == Base::stringMap.end()) {
-			return "";
+			return L"";
 		}
 		return iter->second;
 	}
@@ -37,13 +36,12 @@ namespace Relay {
 		RelayNoti = 2001,
 	};
 	std::map<Value, std::wstring> stringMap = {
-		{ Value::, L"" },
 		{ Value::RelayNoti, L"RelayNoti" },
 	};
 	std::wstring Get(Value value) {
 		auto iter = Relay::stringMap.find(value);
 		if (iter == Relay::stringMap.end()) {
-			return "";
+			return L"";
 		}
 		return iter->second;
 	}
@@ -54,13 +52,12 @@ namespace MailType {
 		None = 0,
 	};
 	std::map<Value, std::wstring> stringMap = {
-		{ Value::, L"" },
 		{ Value::None, L"None" },
 	};
 	std::wstring Get(Value value) {
 		auto iter = MailType::stringMap.find(value);
 		if (iter == MailType::stringMap.end()) {
-			return "";
+			return L"";
 		}
 		return iter->second;
 	}

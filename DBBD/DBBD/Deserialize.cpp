@@ -38,16 +38,4 @@ namespace DBBD {
 	void Deserialize::read(Buffer& buffer, Cell* value) {
 		value->deserialize(buffer);
 	}
-
-	template<typename T1, typename T2>
-	void Deserialize::readVector(Buffer& buffer, T1& vec) {
-		unsigned int vecSize;
-		read(buffer, vecSize);
-
-		for (unsigned int i = 0; i < vecSize; i++) {
-			T2 value;
-			read(buffer, value);
-			vec.push_back(value);
-		}
-	}
 }
