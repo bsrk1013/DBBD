@@ -37,14 +37,4 @@ namespace DBBD {
 	void Serialize::write(Buffer& buffer, Cell* value) {
 		value->serialize(buffer);
 	}
-
-	template<typename T1, typename T2>
-	void Serialize::writeVector(Buffer& buffer, const T1& vec) {
-		unsigned int vecSize = vec.size();
-		write(buffer, vecSize);
-		for (auto it = vec.begin(); it != vec.end(); it++) {
-			T2 data = *it;
-			write(buffer, data);
-		}
-	}
 }
