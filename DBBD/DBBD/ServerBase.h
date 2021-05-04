@@ -15,6 +15,11 @@ namespace DBBD
 		virtual void start() = 0;
 		virtual void stop() = 0;
 
+	public:
+		virtual void broadCasting(DBBD::Cell* data, size_t ignoreSessionId) {};
+		virtual void broadCasting(DBBD::Cell* data, size_t ignoreSessionArray[]) {};
+		virtual void broadCasting(DBBD::Cell* data, std::vector<size_t> ignoreSessionList) {};
+
 	protected:
 		virtual void stopInternal() = 0;
 
