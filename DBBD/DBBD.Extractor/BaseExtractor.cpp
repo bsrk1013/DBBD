@@ -102,13 +102,31 @@ std::string BaseExtractor::getPropertyType(std::string base, std::string type) {
 		else if (this->type == ExtractorType::Csharp) { return "sbyte"; }
 		break;
 	default:
-		if (strcmp(base.c_str(), "cell") == 0
-			|| strcmp(base.c_str(), "Cell") == 0) {
-			return type;
+		if (type.find("list") != std::string::npos) {
+			std::vector<std::string> firstSplit = strSplit(type, '(');
+			if (firstSplit.size() < 2) {
+				std::string msg = "illegal type, type: " + type;
+				new std::exception(msg.c_str());
+			}
+
+			std::vector<std::string> secondSplit = strSplit(firstSplit[1], ')');
+			std::string innerType = secondSplit[0];
+			if (this->type == ExtractorType::Cpp) {
+				return "std::vector<" + getPropertyType(base, innerType) + ">";
+			}
+			else if (this->type == ExtractorType::Csharp) {
+				return "List<" + getPropertyType(base, innerType) + ">";
+			}
 		}
 		else {
-			std::string msg = "illegal type and base, type: " + type + ", base: " + base;
-			new std::exception(msg.c_str());
+			if (strcmp(base.c_str(), "cell") == 0
+				|| strcmp(base.c_str(), "Cell") == 0) {
+				return type;
+			}
+			else {
+				std::string msg = "illegal type and base, type: " + type + ", base: " + base;
+				new std::exception(msg.c_str());
+			}
 		}
 		break;
 	}
@@ -319,4 +337,16 @@ void BaseExtractor::parseContents(std::ofstream& ofs, XMLElement* root, std::str
 
 		child = child->NextSibling();
 	}
+}
+
+std::vector<std::string> BaseExtractor::strSplit(std::string input, char delimiter) {
+	std::vector<std::string> answer;
+	std::stringstream ss(input);
+	std::string temp;
+
+	while (getline(ss, temp, delimiter)) {
+		answer.push_back(temp);
+	}
+
+	return answer;
 }

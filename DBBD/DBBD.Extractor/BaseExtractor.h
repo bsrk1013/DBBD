@@ -86,6 +86,9 @@ private:
 	void parseContents(std::ofstream& ofs, tinyxml2::XMLElement* node, std::string fileName);
 
 protected:
+	std::vector<std::string> strSplit(std::string input, char delimiter);
+
+protected:
 	std::filesystem::path basePath;
 	std::filesystem::path baseOutputPath;
 	std::vector<std::thread*> threadList;

@@ -30,8 +30,8 @@ class UserInfo : DBBD.ICell
 	{
 		uint totalLength = 0;
 		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
-		if (fingerPrinter[0]) { totalLength += (uint)(sizeof(uint) + Encoding.UTF8.GetByteCount(nickname)); }
-		if (fingerPrinter[1]) { totalLength += (uint)(sizeof(long)); }
+		if (fingerPrinter[0]) { sizeof(uint) + Encoding.UTF8.GetByteCount(nickname) }
+		if (fingerPrinter[1]) {  totalLength += sizeof(long);  }
 		return totalLength;
 	}
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
-class TestInfo : DBBD.I
+class TestInfo : DBBD.ICell
 {
 	public TestInfo()
 	{
@@ -27,7 +27,7 @@ class TestInfo : DBBD.I
 	{
 		uint totalLength = 0;
 		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
-		if (fingerPrinter[0]) { totalLength += (uint)(sizeof(int)); }
+		if (fingerPrinter[0]) {  totalLength += sizeof(int);  }
 		return totalLength;
 	}
 
@@ -37,7 +37,7 @@ class TestInfo : DBBD.I
 	private int a;
 }
 
-class TestInfo2 : DBBD.I
+class TestInfo2 : DBBD.ICell
 {
 	public TestInfo2()
 	{
@@ -60,7 +60,7 @@ class TestInfo2 : DBBD.I
 	{
 		uint totalLength = 0;
 		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
-		if (fingerPrinter[0]) { totalLength += (uint)(b.GetLength()); }
+		if (fingerPrinter[0]) { b.GetLength() }
 		return totalLength;
 	}
 
@@ -68,6 +68,72 @@ class TestInfo2 : DBBD.I
 
 	private List<bool> fingerPrinter = new List<bool>();
 	private TestInfo b;
+}
+
+class TestInfo3 : DBBD.ICell
+{
+	public TestInfo3()
+	{
+		fingerPrinter.AddRange(Enumerable.Repeat(false, 1));
+	}
+
+	public override void Serialize(DBBD.Buffer buffer)
+	{
+		DBBD.Serizlie.Write(buffer, fingerPrinter);
+		if (fingerPrinter[0]) { DBBD.Serialize.Write(buffer, c); }
+	}
+
+	public override void Deserialize(DBBD.Buffer buffer)
+	{
+		DBBD.Deserialize.Read(buffer, out fingerPrinter);
+		if (fingerPrinter[0]) { DBBD.Deserialize.Read(buffer, out c); }
+	}
+
+	public override uint GetLength()
+	{
+		uint totalLength = 0;
+		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
+		if (fingerPrinter[0]) { sizeof(uint) + Encoding.UTF8.GetByteCount(c) }
+		return totalLength;
+	}
+
+	public List<string> C { get { return c; } set { c = value; fingerPrinter[0] = true; } }
+
+	private List<bool> fingerPrinter = new List<bool>();
+	private List<string> c;
+}
+
+class TestInfo4 : DBBD.ICell
+{
+	public TestInfo4()
+	{
+		fingerPrinter.AddRange(Enumerable.Repeat(false, 1));
+	}
+
+	public override void Serialize(DBBD.Buffer buffer)
+	{
+		DBBD.Serizlie.Write(buffer, fingerPrinter);
+		if (fingerPrinter[0]) { DBBD.Serialize.Write(buffer, d); }
+	}
+
+	public override void Deserialize(DBBD.Buffer buffer)
+	{
+		DBBD.Deserialize.Read(buffer, out fingerPrinter);
+		if (fingerPrinter[0]) { DBBD.Deserialize.Read(buffer, out d); }
+	}
+
+	public override uint GetLength()
+	{
+		uint totalLength = 0;
+		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
+		if (fingerPrinter[0]) { d.GetLength() }
+		return totalLength;
+	}
+
+	public List<TestInfo3> D { get { return d; } set { d = value; fingerPrinter[0] = true; } }
+
+	private List<bool> fingerPrinter = new List<bool>();
+	private List<TestInfo3> d;
 }
 
 // Test1
@@ -124,7 +190,7 @@ class ServerConnectResp : DBBD.Response
 		uint totalLength = 0;
 		totalLength += (uint)(base.GetLength());
 		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
-		if (fingerPrinter[0]) { totalLength += (uint)(sizeof(int)); }
+		if (fingerPrinter[0]) {  totalLength += sizeof(int);  }
 		return totalLength;
 	}
 
@@ -179,16 +245,16 @@ class RelayNoti : DBBD.Request
 		uint totalLength = 0;
 		totalLength += (uint)(base.GetLength());
 		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
-		if (fingerPrinter[0]) { totalLength += (uint)(sizeof(int)); }
-		if (fingerPrinter[1]) { totalLength += (uint)(sizeof(int)); }
-		if (fingerPrinter[2]) { totalLength += (uint)(sizeof(int)); }
-		if (fingerPrinter[3]) { totalLength += (uint)(sizeof(int)); }
-		if (fingerPrinter[4]) { totalLength += (uint)(sizeof(int)); }
-		if (fingerPrinter[5]) { totalLength += (uint)(sizeof(int)); }
-		if (fingerPrinter[6]) { totalLength += (uint)(sizeof(float)); }
-		if (fingerPrinter[7]) { totalLength += (uint)(sizeof(float)); }
-		if (fingerPrinter[8]) { totalLength += (uint)(sizeof(float)); }
-		if (fingerPrinter[9]) { totalLength += (uint)(sizeof(float)); }
+		if (fingerPrinter[0]) {  totalLength += sizeof(int);  }
+		if (fingerPrinter[1]) {  totalLength += sizeof(int);  }
+		if (fingerPrinter[2]) {  totalLength += sizeof(int);  }
+		if (fingerPrinter[3]) {  totalLength += sizeof(int);  }
+		if (fingerPrinter[4]) {  totalLength += sizeof(int);  }
+		if (fingerPrinter[5]) {  totalLength += sizeof(int);  }
+		if (fingerPrinter[6]) {  totalLength += sizeof(float);  }
+		if (fingerPrinter[7]) {  totalLength += sizeof(float);  }
+		if (fingerPrinter[8]) {  totalLength += sizeof(float);  }
+		if (fingerPrinter[9]) {  totalLength += sizeof(float);  }
 		return totalLength;
 	}
 

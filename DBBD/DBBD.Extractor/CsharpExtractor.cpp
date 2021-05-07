@@ -95,7 +95,7 @@ void CsharpExtractor::writeContentsHeader(std::ofstream& ofs)
 		case XmlElementType::Protocol:
 		case XmlElementType::Cell: {
 			if (info.fileType == XmlElementType::Cell) {
-				ofs << "class " << info.name << " : DBBD.I" << info.base << endl;
+				ofs << "class " << info.name << " : DBBD.ICell"<< endl;
 			}
 			else if (info.fileType == XmlElementType::Protocol) {
 				ofs << "class " << info.name << " : DBBD." << info.base << endl;
@@ -168,7 +168,8 @@ void CsharpExtractor::writeCellContents(std::ofstream& ofs)
 		ofs << "\t\ttotalLength += (uint)(sizeof(uint) + fingerPrinter.Count);" << endl;
 		for (size_t i = 0; i < realContents.size(); i++) {
 			auto info = realContents[i];
-			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += (uint)(" << getLength(info.base, info.type, info.name) << "); }" << endl;
+			ofs << "\t\tif (fingerPrinter[" << i << "]) { " + getLength(info.base, info.type, info.name) + " }" << endl;
+			//ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += (uint)(" << getLength(info.base, info.type, info.name) << "); }" << endl;
 		}
 	}
 	ofs << "\t\treturn totalLength;" << endl;
@@ -254,7 +255,8 @@ void CsharpExtractor::writeProtocolContents(std::ofstream& ofs, std::string base
 		ofs << "\t\ttotalLength += (uint)(sizeof(uint) + fingerPrinter.Count);" << endl;
 		for (size_t i = 0; i < realContents.size(); i++) {
 			auto info = realContents[i];
-			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += (uint)(" << getLength(info.base, info.type, info.name) << "); }" << endl;
+			ofs << "\t\tif (fingerPrinter[" << i << "]) { " + getLength(info.base, info.type, info.name) + " }" << endl;
+			//ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += (uint)(" << getLength(info.base, info.type, info.name) << "); }" << endl;
 		}
 	}
 	ofs << "\t\treturn totalLength;" << endl;
@@ -313,6 +315,25 @@ void CsharpExtractor::writeProtocolContents(std::ofstream& ofs, std::string base
 }
 
 string CsharpExtractor::getLength(string base, string type, string name) {
+	int typeInType = 0; // 0 : default, 1 : list
+	if (type.find("list") != std::string::npos) {
+		std::vector<std::string> firstSplit = strSplit(type, '(');
+		if (firstSplit.size() < 2) {
+			string msg = "illegal type, type: " + type;
+			new exception(msg.c_str());
+		}
+
+		std::vector<std::string> secondSplit = strSplit(firstSplit[1], ')');
+		type = secondSplit[0];
+
+		typeInType = 1;
+	}
+
+	if (!(0 <= typeInType && typeInType <= 1)) {
+		string msg = "illegal type and base, type: " + type + ", base: " + base;
+		new exception(msg.c_str());
+	}
+
 	switch (HashCode(type.c_str())) {
 	case HashCode("int64"):
 	case HashCode("uint64"):
@@ -326,7 +347,12 @@ string CsharpExtractor::getLength(string base, string type, string name) {
 	case HashCode("char"):
 	case HashCode("byte"):
 	case HashCode("sbyte"):
-		return "sizeof(" + getPropertyType(base, type) + ")";
+		if (typeInType == 0) {
+			return " totalLength += sizeof(" + getPropertyType(base, type) + "); ";
+		}
+		else if (typeInType == 1) {
+			return " totalLength += sizeof(" + getPropertyType(base, "uint32") + ") + (" + name + ".Count * sizeof(" + getPropertyType(base, type) + ")); ";
+		}
 		break;
 	case HashCode("string"):
 		return "sizeof(" + getPropertyType(base, "uint32") + ") + Encoding.UTF8.GetByteCount(" + name + ")";

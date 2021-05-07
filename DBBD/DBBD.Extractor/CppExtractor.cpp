@@ -85,7 +85,13 @@ void CppExtractor::writeContentsHeader(ofstream& ofs) {
 		}
 		case XmlElementType::Protocol:
 		case XmlElementType::Cell: {
-			ofs << "class " << info.name << " : public DBBD::" << info.base << " {" << endl;
+			if (info.fileType == XmlElementType::Protocol) {
+				ofs << "class " << info.name << " : public DBBD::" << info.base << " {" << endl;
+			}
+			else {
+				ofs << "class " << info.name << " : public DBBD::Cell {" << endl;
+			}
+			
 			ofs << "public:" << endl;
 			if (info.fileType == XmlElementType::Cell) {
 				ofs << "\t" << info.name << "() {}" << endl;
@@ -150,7 +156,7 @@ void CppExtractor::writeCellContents(ofstream& ofs) {
 		ofs << "\t\ttotalLength += sizeof(unsigned int) + sizeof(fingerPrinter);" << endl;
 		for (size_t i = 0; i < realContents.size(); i++) {
 			auto info = realContents[i];
-			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += " << getLength(info.base, info.type, info.name) << "; }" << endl;
+			ofs << "\t\tif (fingerPrinter[" << i << "]) {" + getLength(info.base, info.type, info.name) + "}" << endl;
 		}
 	}
 	ofs << "\t\treturn totalLength;" << endl;
@@ -277,7 +283,7 @@ void CppExtractor::writeProtocolContents(ofstream& ofs, string base) {
 		ofs << "\t\ttotalLength += sizeof(unsigned int) + sizeof(fingerPrinter);" << endl;
 		for (size_t i = 0; i < realContents.size(); i++) {
 			auto info = realContents[i];
-			ofs << "\t\tif (fingerPrinter[" << i << "]) { totalLength += " << getLength(info.base, info.type, info.name) << "; }" << endl;
+			ofs << "\t\tif (fingerPrinter[" << i << "]) {" + getLength(info.base, info.type, info.name) + "}" << endl;
 		}
 	}
 	ofs << "\t\treturn totalLength;" << endl;
@@ -330,7 +336,27 @@ void CppExtractor::writeProtocolContents(ofstream& ofs, string base) {
 }
 
 string CppExtractor::getDeSerialize(string base, string type, string name, bool isSerialize) {
-	string baseProcess = isSerialize ? "DBBD::Serialize::write" : "DBBD::Deserialize::read";
+	string baseProcess = "";
+	//string baseProcess = isSerialize ? "DBBD::Serialize::write" : "DBBD::Deserialize::read";
+
+	// typeÀÌ list¶ó¸é
+	if (type.find("list") != std::string::npos) {
+		std::vector<std::string> firstSplit = strSplit(type, '(');
+		if (firstSplit.size() < 2) {
+			string msg = "illegal type, type: " + type;
+			new exception(msg.c_str());
+		}
+
+		std::vector<std::string> secondSplit = strSplit(firstSplit[1], ')');
+		type = secondSplit[0];
+		baseProcess = isSerialize
+			? "DBBD::Serialize::writeVector<std::vector<" + getPropertyType(base, type) + ">, " + getPropertyType(base, type) + ">"
+			: "DBBD::Deserialize::readVector<std::vector<" + getPropertyType(base, type) + ">, " + getPropertyType(base, type) + ">";
+	}
+	else {
+		baseProcess = isSerialize ? "DBBD::Serialize::write" : "DBBD::Deserialize::read";
+	}
+
 	switch (HashCode(type.c_str())) {
 	case HashCode("string"):
 	case HashCode("int64"):
@@ -359,6 +385,25 @@ string CppExtractor::getDeSerialize(string base, string type, string name, bool 
 }
 
 string CppExtractor::getLength(string base, string type, string name) {
+	int typeInType = 0; // 0 : default, 1 : list
+	if (type.find("list") != std::string::npos) {
+		std::vector<std::string> firstSplit = strSplit(type, '(');
+		if (firstSplit.size() < 2) {
+			string msg = "illegal type, type: " + type;
+			new exception(msg.c_str());
+		}
+
+		std::vector<std::string> secondSplit = strSplit(firstSplit[1], ')');
+		type = secondSplit[0];
+
+		typeInType = 1;
+	}
+
+	if (!(0 <= typeInType && typeInType <= 1)) {
+		string msg = "illegal type and base, type: " + type + ", base: " + base;
+		new exception(msg.c_str());
+	}
+
 	switch (HashCode(type.c_str())) {
 	case HashCode("int64"):
 	case HashCode("uint64"):
@@ -372,11 +417,43 @@ string CppExtractor::getLength(string base, string type, string name) {
 	case HashCode("char"):
 	case HashCode("byte"):
 	case HashCode("sbyte"):
-		return "sizeof(" + getPropertyType(base, type) + ")";
+		if (typeInType == 0) {
+			return " totalLength += sizeof(" + getPropertyType(base, type) + "); ";
+		}
+		else if (typeInType == 1) {
+			return " totalLength += sizeof(unsigned int) + sizeof(" + getPropertyType(base, type) + ") * " + name + ".size(); ";
+		}
 		break;
 	case HashCode("string"):
-		return "sizeof(unsigned int) + (" + name + ".size() * sizeof(wchar_t))";
+		if (typeInType == 0) {
+			return " totalLength += sizeof(unsigned int) + (" + name + ".size() * sizeof(wchar_t)); ";
+		}
+		else if (typeInType == 1) {
+			string result = "\n\t\t\ttotalLength += sizeof(unsigned int);\n";
+			result += "\t\t\tfor(auto data: " + name + ") {\n";
+			result += "\t\t\t\ttotalLength += sizeof(unsigned int) + data.size() * sizeof(wchar_t);\n";
+			result += "\t\t\t}\n";
+			return result;
+		}
+		break;
 	default:
-		return name + ".getLength()";
+		if (strcmp(base.c_str(), "cell") == 0
+			|| strcmp(base.c_str(), "Cell") == 0) {
+			if (typeInType == 0) {
+				return " totalLength += " + name + ".getLength(); ";
+			}
+			else if (typeInType == 1) {
+				string result = "\n\t\t\ttotalLength += sizeof(unsigned int);\n";
+				result += "\t\t\tfor(auto data: " + name + ") {\n";
+				result += "\t\t\t\ttotalLength += data.getLength();\n";
+				result += "\t\t\t}\n";
+				return result;
+			}
+		}
+		else {
+			string msg = "illegal type and base, type: " + type + ", base: " + base;
+			new exception(msg.c_str());
+		}
+		break;
 	}
 }

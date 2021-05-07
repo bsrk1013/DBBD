@@ -6,6 +6,12 @@
 		<cell name="TestInfo2">
 			<property name="b" type="TestInfo" base="cell"/>
 		</cell>
+		<cell name="TestInfo3">
+			<property name="c" type="list(string)" base="cell"/>
+		</cell>
+		<cell name="TestInfo4">
+			<property name="d" type="list(TestInfo3)" base="cell"/>
+		</cell>
 	</cells>
 	<protocols>
     <!-- Test1 -->
