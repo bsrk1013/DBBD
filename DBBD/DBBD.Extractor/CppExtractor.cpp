@@ -14,6 +14,7 @@ void CppExtractor::writeHeader(ofstream& ofs) {
 	ofs << "#include \"DBBD/Request.h\"" << endl;
 	ofs << "#include \"DBBD/Response.h\"" << endl;
 	ofs << "#include \"DBBD/Common.hpp\"" << endl;
+	ofs << "#include \"DBBD/json.hpp\"" << endl;
 	ofs << "#include \"ProtocolType.hpp\"" << endl;
 	ofs << endl;
 }
@@ -49,7 +50,7 @@ void CppExtractor::writeConst(ofstream& ofs, string fileName, bool isFirst) {
 	}
 
 	ofs << "namespace " << fileName << " {" << endl;
-	ofs << "\tenum Value {" << endl;
+	ofs << "\tstatic enum Value {" << endl;
 	for (auto info : headerInfoList) {
 		if (info.fileType == XmlElementType::Comment)
 			continue;
@@ -58,7 +59,7 @@ void CppExtractor::writeConst(ofstream& ofs, string fileName, bool isFirst) {
 	}
 	ofs << "\t};" << endl;
 
-	ofs << "\tstd::map<Value, std::wstring> stringMap = {" << endl;
+	ofs << "\tstatic std::map<Value, std::wstring> stringMap = {" << endl;
 	for (auto info : headerInfoList) {
 		if (info.fileType == XmlElementType::Comment)
 			continue;
@@ -66,7 +67,7 @@ void CppExtractor::writeConst(ofstream& ofs, string fileName, bool isFirst) {
 	}
 	ofs << "\t};" << endl;
 
-	ofs << "\tstd::wstring Get(Value value) {" << endl;
+	ofs << "\tstatic std::wstring Get(Value value) {" << endl;
 	ofs << "\t\tauto iter = " << fileName << "::stringMap.find(value);" << endl;
 	ofs << "\t\tif (iter == " << fileName << "::stringMap.end()) {" << endl;
 	ofs << "\t\t\treturn L\"\";" << endl;
@@ -375,7 +376,7 @@ string CppExtractor::getDeSerialize(string base, string type, string name, bool 
 	default:
 		if (strcmp(base.c_str(), "cell") == 0
 			|| strcmp(base.c_str(), "Cell") == 0) {
-			return baseProcess + "(buffer, dynamic_cast<DBBD::Cell*>(&" + name + ");";
+			return baseProcess + "(buffer, dynamic_cast<DBBD::Cell*>(&" + name + "));";
 		}
 		else {
 			string msg = "illegal type and base, type: " + type + ", base: " + base;

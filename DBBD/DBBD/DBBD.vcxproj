@@ -174,7 +174,6 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="MariaDBManager.h" />
     <ClInclude Include="ObjectPoolManager.h" />
-    <ClInclude Include="ProtocolType.hpp" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="rapidjson\allocators.h" />
     <ClInclude Include="rapidjson\cursorstreamwrapper.h" />
@@ -224,7 +223,6 @@
     <ClInclude Include="TcpClientSession.h" />
     <ClInclude Include="TcpServerBase.h" />
     <ClInclude Include="TcpSessionBase.h" />
-    <ClInclude Include="test.hpp" />
     <ClInclude Include="TimerManager.h" />
     <ClInclude Include="TimerObject.h" />
     <ClInclude Include="YamlParser.hpp" />

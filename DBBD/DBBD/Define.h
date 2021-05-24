@@ -25,4 +25,9 @@ namespace DBBD {
 
 	// short naming
 	using StringVector = std::vector<std::string>;
+
+#define NULL_CHECK_VOID(target)\
+if(target.get() == nullptr) {\
+return;\
+}
 }

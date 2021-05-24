@@ -18,4 +18,6 @@ namespace DBBD {
 		Random();
 		std::mt19937* mersenne;
 	};
+
+#define RANDOM DBBD::Random::instance()
 }

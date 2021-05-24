@@ -95,10 +95,10 @@ void CsharpExtractor::writeContentsHeader(std::ofstream& ofs)
 		case XmlElementType::Protocol:
 		case XmlElementType::Cell: {
 			if (info.fileType == XmlElementType::Cell) {
-				ofs << "class " << info.name << " : DBBD.ICell"<< endl;
+				ofs << "public class " << info.name << " : DBBD.ICell"<< endl;
 			}
 			else if (info.fileType == XmlElementType::Protocol) {
-				ofs << "class " << info.name << " : DBBD." << info.base << endl;
+				ofs << "public class " << info.name << " : DBBD." << info.base << endl;
 			}
 			ofs << "{" << endl;
 			ofs << "\tpublic " << info.name << "()" << endl;
@@ -139,10 +139,10 @@ void CsharpExtractor::writeCellContents(std::ofstream& ofs)
 		if (headerInfo.fileType == XmlElementType::Cell) { header.push_back(headerInfo); break; }
 	}
 
-	ofs << "\tpublic override void Serialize(DBBD.Buffer buffer)" << endl;
+	ofs << "\tpublic virtual void Serialize(DBBD.Buffer buffer)" << endl;
 	ofs << "\t{" << endl;
 	if (realContents.size() > 0) {
-		ofs << "\t\tDBBD.Serizlie.Write(buffer, fingerPrinter);" << endl;
+		ofs << "\t\tDBBD.Serialize.Write(buffer, fingerPrinter);" << endl;
 		for (size_t i = 0; i < realContents.size(); i++) {
 			auto info = realContents[i];
 			ofs << "\t\tif (fingerPrinter[" << i << "]) { " << "DBBD.Serialize.Write(buffer, " << info.name << "); }" << endl;
@@ -150,7 +150,7 @@ void CsharpExtractor::writeCellContents(std::ofstream& ofs)
 	}
 	ofs << "\t}" << endl << endl;
 
-	ofs << "\tpublic override void Deserialize(DBBD.Buffer buffer)" << endl;
+	ofs << "\tpublic virtual void Deserialize(DBBD.Buffer buffer)" << endl;
 	ofs << "\t{" << endl;
 	if (realContents.size() > 0) {
 		ofs << "\t\tDBBD.Deserialize.Read(buffer, out fingerPrinter);" << endl;
@@ -161,7 +161,7 @@ void CsharpExtractor::writeCellContents(std::ofstream& ofs)
 	}
 	ofs << "\t}" << endl << endl;
 
-	ofs << "\tpublic override uint GetLength()" << endl;
+	ofs << "\tpublic virtual uint GetLength()" << endl;
 	ofs << "\t{" << endl;
 	ofs << "\t\tuint totalLength = 0;" << endl;
 	if (realContents.size() > 0) {
@@ -355,8 +355,8 @@ string CsharpExtractor::getLength(string base, string type, string name) {
 		}
 		break;
 	case HashCode("string"):
-		return "sizeof(" + getPropertyType(base, "uint32") + ") + Encoding.UTF8.GetByteCount(" + name + ")";
+		return "totalLength += sizeof(" + getPropertyType(base, "uint32") + ") + Encoding.UTF8.GetByteCount(" + name + ")";
 	default:
-		return name + ".GetLength()";
+		return "totalLength += " + name + ".GetLength();";
 	}
 }
