@@ -41,5 +41,15 @@ namespace DBBD {
 				vec.push_back(value);
 			}
 		}
+		template<typename T1, typename T2>
+		static void readCellVector(Buffer& buffer, T1& vec) {
+			unsigned int vecSize;
+			read(buffer, vecSize);
+			for (unsigned int i = 0; i < vecSize; i++) {
+				T2 value;
+				read(buffer, (Cell*)&value);
+				vec.push_back(value);
+			}
+		}
 	};
 }

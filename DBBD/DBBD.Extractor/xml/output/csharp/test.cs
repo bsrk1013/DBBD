@@ -5,32 +5,32 @@ using System.Text;
 using System.Collections.Generic;
 
 // 유저 정보
-class UserInfo : DBBD.ICell
+public class UserInfo : DBBD.ICell
 {
 	public UserInfo()
 	{
 		fingerPrinter.AddRange(Enumerable.Repeat(false, 2));
 	}
 
-	public override void Serialize(DBBD.Buffer buffer)
+	public virtual void Serialize(DBBD.Buffer buffer)
 	{
-		DBBD.Serizlie.Write(buffer, fingerPrinter);
+		DBBD.Serialize.Write(buffer, fingerPrinter);
 		if (fingerPrinter[0]) { DBBD.Serialize.Write(buffer, nickname); }
 		if (fingerPrinter[1]) { DBBD.Serialize.Write(buffer, level); }
 	}
 
-	public override void Deserialize(DBBD.Buffer buffer)
+	public virtual void Deserialize(DBBD.Buffer buffer)
 	{
 		DBBD.Deserialize.Read(buffer, out fingerPrinter);
 		if (fingerPrinter[0]) { DBBD.Deserialize.Read(buffer, out nickname); }
 		if (fingerPrinter[1]) { DBBD.Deserialize.Read(buffer, out level); }
 	}
 
-	public override uint GetLength()
+	public virtual uint GetLength()
 	{
 		uint totalLength = 0;
 		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
-		if (fingerPrinter[0]) { sizeof(uint) + Encoding.UTF8.GetByteCount(nickname) }
+		if (fingerPrinter[0]) { totalLength += sizeof(uint) + Encoding.UTF8.GetByteCount(nickname) }
 		if (fingerPrinter[1]) {  totalLength += sizeof(long);  }
 		return totalLength;
 	}
@@ -43,7 +43,7 @@ class UserInfo : DBBD.ICell
 	private long level;
 }
 
-class PingCheckReq : DBBD.Request
+public class PingCheckReq : DBBD.Request
 {
 	public PingCheckReq()
 	{
@@ -68,7 +68,7 @@ class PingCheckReq : DBBD.Request
 	}
 }
 
-class PingCheckResp : DBBD.Response
+public class PingCheckResp : DBBD.Response
 {
 	public PingCheckResp()
 	{

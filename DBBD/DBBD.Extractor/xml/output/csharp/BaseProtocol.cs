@@ -4,26 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
-class TestInfo : DBBD.ICell
+public class TestInfo : DBBD.ICell
 {
 	public TestInfo()
 	{
 		fingerPrinter.AddRange(Enumerable.Repeat(false, 1));
 	}
 
-	public override void Serialize(DBBD.Buffer buffer)
+	public virtual void Serialize(DBBD.Buffer buffer)
 	{
-		DBBD.Serizlie.Write(buffer, fingerPrinter);
+		DBBD.Serialize.Write(buffer, fingerPrinter);
 		if (fingerPrinter[0]) { DBBD.Serialize.Write(buffer, a); }
 	}
 
-	public override void Deserialize(DBBD.Buffer buffer)
+	public virtual void Deserialize(DBBD.Buffer buffer)
 	{
 		DBBD.Deserialize.Read(buffer, out fingerPrinter);
 		if (fingerPrinter[0]) { DBBD.Deserialize.Read(buffer, out a); }
 	}
 
-	public override uint GetLength()
+	public virtual uint GetLength()
 	{
 		uint totalLength = 0;
 		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
@@ -37,30 +37,30 @@ class TestInfo : DBBD.ICell
 	private int a;
 }
 
-class TestInfo2 : DBBD.ICell
+public class TestInfo2 : DBBD.ICell
 {
 	public TestInfo2()
 	{
 		fingerPrinter.AddRange(Enumerable.Repeat(false, 1));
 	}
 
-	public override void Serialize(DBBD.Buffer buffer)
+	public virtual void Serialize(DBBD.Buffer buffer)
 	{
-		DBBD.Serizlie.Write(buffer, fingerPrinter);
+		DBBD.Serialize.Write(buffer, fingerPrinter);
 		if (fingerPrinter[0]) { DBBD.Serialize.Write(buffer, b); }
 	}
 
-	public override void Deserialize(DBBD.Buffer buffer)
+	public virtual void Deserialize(DBBD.Buffer buffer)
 	{
 		DBBD.Deserialize.Read(buffer, out fingerPrinter);
 		if (fingerPrinter[0]) { DBBD.Deserialize.Read(buffer, out b); }
 	}
 
-	public override uint GetLength()
+	public virtual uint GetLength()
 	{
 		uint totalLength = 0;
 		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
-		if (fingerPrinter[0]) { b.GetLength() }
+		if (fingerPrinter[0]) { totalLength += b.GetLength(); }
 		return totalLength;
 	}
 
@@ -70,30 +70,30 @@ class TestInfo2 : DBBD.ICell
 	private TestInfo b;
 }
 
-class TestInfo3 : DBBD.ICell
+public class TestInfo3 : DBBD.ICell
 {
 	public TestInfo3()
 	{
 		fingerPrinter.AddRange(Enumerable.Repeat(false, 1));
 	}
 
-	public override void Serialize(DBBD.Buffer buffer)
+	public virtual void Serialize(DBBD.Buffer buffer)
 	{
-		DBBD.Serizlie.Write(buffer, fingerPrinter);
+		DBBD.Serialize.Write(buffer, fingerPrinter);
 		if (fingerPrinter[0]) { DBBD.Serialize.Write(buffer, c); }
 	}
 
-	public override void Deserialize(DBBD.Buffer buffer)
+	public virtual void Deserialize(DBBD.Buffer buffer)
 	{
 		DBBD.Deserialize.Read(buffer, out fingerPrinter);
 		if (fingerPrinter[0]) { DBBD.Deserialize.Read(buffer, out c); }
 	}
 
-	public override uint GetLength()
+	public virtual uint GetLength()
 	{
 		uint totalLength = 0;
 		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
-		if (fingerPrinter[0]) { sizeof(uint) + Encoding.UTF8.GetByteCount(c) }
+		if (fingerPrinter[0]) { totalLength += sizeof(uint) + Encoding.UTF8.GetByteCount(c) }
 		return totalLength;
 	}
 
@@ -103,30 +103,30 @@ class TestInfo3 : DBBD.ICell
 	private List<string> c;
 }
 
-class TestInfo4 : DBBD.ICell
+public class TestInfo4 : DBBD.ICell
 {
 	public TestInfo4()
 	{
 		fingerPrinter.AddRange(Enumerable.Repeat(false, 1));
 	}
 
-	public override void Serialize(DBBD.Buffer buffer)
+	public virtual void Serialize(DBBD.Buffer buffer)
 	{
-		DBBD.Serizlie.Write(buffer, fingerPrinter);
+		DBBD.Serialize.Write(buffer, fingerPrinter);
 		if (fingerPrinter[0]) { DBBD.Serialize.Write(buffer, d); }
 	}
 
-	public override void Deserialize(DBBD.Buffer buffer)
+	public virtual void Deserialize(DBBD.Buffer buffer)
 	{
 		DBBD.Deserialize.Read(buffer, out fingerPrinter);
 		if (fingerPrinter[0]) { DBBD.Deserialize.Read(buffer, out d); }
 	}
 
-	public override uint GetLength()
+	public virtual uint GetLength()
 	{
 		uint totalLength = 0;
 		totalLength += (uint)(sizeof(uint) + fingerPrinter.Count);
-		if (fingerPrinter[0]) { d.GetLength() }
+		if (fingerPrinter[0]) { totalLength += d.GetLength(); }
 		return totalLength;
 	}
 
@@ -137,7 +137,7 @@ class TestInfo4 : DBBD.ICell
 }
 
 // Test1
-class ServerConnectReq : DBBD.Request
+public class ServerConnectReq : DBBD.Request
 {
 	public ServerConnectReq()
 	{
@@ -163,7 +163,7 @@ class ServerConnectReq : DBBD.Request
 }
 
 // Test2
-class ServerConnectResp : DBBD.Response
+public class ServerConnectResp : DBBD.Response
 {
 	public ServerConnectResp()
 	{
@@ -200,7 +200,7 @@ class ServerConnectResp : DBBD.Response
 	private int sessionId;
 }
 
-class RelayNoti : DBBD.Request
+public class RelayNoti : DBBD.Request
 {
 	public RelayNoti()
 	{

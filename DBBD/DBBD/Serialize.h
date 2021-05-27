@@ -34,7 +34,6 @@ namespace DBBD
 				write(buffer, value);
 			}
 		}
-
 		template<typename T1, typename T2>
 		static void writeVector(Buffer& buffer, const T1& vec) {
 			unsigned int vecSize = vec.size();
@@ -42,6 +41,16 @@ namespace DBBD
 			for (auto it = vec.begin(); it != vec.end(); it++) {
 				T2 data = *it;
 				write(buffer, data);
+			}
+		}
+		template<typename T1, typename T2>
+		static void writeCellVector(Buffer& buffer, const T1& vec)
+		{
+			unsigned int vecSize = vec.size();
+			write(buffer, vecSize);
+			for (auto it = vec.begin(); it != vec.end(); it++) {
+				T2 data = *it;
+				write(buffer, (Cell*)&data);
 			}
 		}
 	};

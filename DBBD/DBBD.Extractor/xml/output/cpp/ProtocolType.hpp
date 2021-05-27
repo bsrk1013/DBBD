@@ -3,6 +3,7 @@
 #include "DBBD/Request.h"
 #include "DBBD/Response.h"
 #include "DBBD/Common.hpp"
+#include "DBBD/json.hpp"
 #include "ProtocolType.hpp"
 
 #include <map>
@@ -10,19 +11,19 @@
 
 //Base Protocol
 namespace Base {
-	enum Value {
+	static enum Value {
 		ServerConnectReq = 1001,
 		ServerConnectResp = 1002,
 		PingCheckReq = 1003,
 		PingCheckResp = 1004,
 	};
-	std::map<Value, std::wstring> stringMap = {
+	static std::map<Value, std::wstring> stringMap = {
 		{ Value::ServerConnectReq, L"ServerConnectReq" },
 		{ Value::ServerConnectResp, L"ServerConnectResp" },
 		{ Value::PingCheckReq, L"PingCheckReq" },
 		{ Value::PingCheckResp, L"PingCheckResp" },
 	};
-	std::wstring Get(Value value) {
+	static std::wstring Get(Value value) {
 		auto iter = Base::stringMap.find(value);
 		if (iter == Base::stringMap.end()) {
 			return L"";
@@ -32,13 +33,13 @@ namespace Base {
 }
 // Relay Protocol
 namespace Relay {
-	enum Value {
+	static enum Value {
 		RelayNoti = 2001,
 	};
-	std::map<Value, std::wstring> stringMap = {
+	static std::map<Value, std::wstring> stringMap = {
 		{ Value::RelayNoti, L"RelayNoti" },
 	};
-	std::wstring Get(Value value) {
+	static std::wstring Get(Value value) {
 		auto iter = Relay::stringMap.find(value);
 		if (iter == Relay::stringMap.end()) {
 			return L"";
@@ -48,13 +49,13 @@ namespace Relay {
 }
 // MailType 
 namespace MailType {
-	enum Value {
+	static enum Value {
 		None = 0,
 	};
-	std::map<Value, std::wstring> stringMap = {
+	static std::map<Value, std::wstring> stringMap = {
 		{ Value::None, L"None" },
 	};
-	std::wstring Get(Value value) {
+	static std::wstring Get(Value value) {
 		auto iter = MailType::stringMap.find(value);
 		if (iter == MailType::stringMap.end()) {
 			return L"";

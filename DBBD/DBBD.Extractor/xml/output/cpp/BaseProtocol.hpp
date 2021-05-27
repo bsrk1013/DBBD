@@ -3,6 +3,7 @@
 #include "DBBD/Request.h"
 #include "DBBD/Response.h"
 #include "DBBD/Common.hpp"
+#include "DBBD/json.hpp"
 #include "ProtocolType.hpp"
 
 class TestInfo : public DBBD::Cell {
@@ -60,12 +61,12 @@ public:
 public:
 	virtual void serialize(DBBD::Buffer& buffer) {
 		DBBD::Serialize::writeArray(buffer, fingerPrinter);
-		if (fingerPrinter[0]) { DBBD::Serialize::write(buffer, dynamic_cast<DBBD::Cell*>(&b); }
+		if (fingerPrinter[0]) { DBBD::Serialize::write(buffer, b); }
 	}
 
 	virtual void deserialize(DBBD::Buffer& buffer) {
 		DBBD::Deserialize::readArray(buffer, fingerPrinter);
-		if (fingerPrinter[0]) { DBBD::Deserialize::read(buffer, dynamic_cast<DBBD::Cell*>(&b); }
+		if (fingerPrinter[0]) { DBBD::Deserialize::read(buffer, b); }
 	}
 
 	virtual unsigned int getLength() {
@@ -77,14 +78,14 @@ public:
 
 	std::string toJson() {
 		nlohmann::json j;
-		if (fingerPrinter[0]) { j["b"] = b; }
+		if (fingerPrinter[0]) { j["b"] = b.toJson(); }
 		return j.dump();
 	}
 
 	void fromJson(std::string rawJson) {
 		nlohmann::json j = nlohmann::json::parse(rawJson);
 		if (!j["b"].is_null()) {
-			b = j["b"].get<TestInfo>();
+b.fromJson(j["b"]);
 		}
 	}
 
@@ -128,14 +129,14 @@ public:
 
 	std::string toJson() {
 		nlohmann::json j;
-		if (fingerPrinter[0]) { j["c"] = c; }
+		if (fingerPrinter[0]) { j["c"] = c.toJson(); }
 		return j.dump();
 	}
 
 	void fromJson(std::string rawJson) {
 		nlohmann::json j = nlohmann::json::parse(rawJson);
 		if (!j["c"].is_null()) {
-			c = j["c"].get<std::vector<std::wstring>>();
+c.fromJson(j["c"]);
 		}
 	}
 
@@ -157,12 +158,12 @@ public:
 public:
 	virtual void serialize(DBBD::Buffer& buffer) {
 		DBBD::Serialize::writeArray(buffer, fingerPrinter);
-		if (fingerPrinter[0]) { DBBD::Serialize::writeVector<std::vector<TestInfo3>, TestInfo3>(buffer, dynamic_cast<DBBD::Cell*>(&d); }
+		if (fingerPrinter[0]) { DBBD::Serialize::writeVector<std::vector<TestInfo3>, TestInfo3>(buffer, d); }
 	}
 
 	virtual void deserialize(DBBD::Buffer& buffer) {
 		DBBD::Deserialize::readArray(buffer, fingerPrinter);
-		if (fingerPrinter[0]) { DBBD::Deserialize::readVector<std::vector<TestInfo3>, TestInfo3>(buffer, dynamic_cast<DBBD::Cell*>(&d); }
+		if (fingerPrinter[0]) { DBBD::Deserialize::readVector<std::vector<TestInfo3>, TestInfo3>(buffer, d); }
 	}
 
 	virtual unsigned int getLength() {
@@ -179,14 +180,14 @@ public:
 
 	std::string toJson() {
 		nlohmann::json j;
-		if (fingerPrinter[0]) { j["d"] = d; }
+		if (fingerPrinter[0]) { j["d"] = d.toJson(); }
 		return j.dump();
 	}
 
 	void fromJson(std::string rawJson) {
 		nlohmann::json j = nlohmann::json::parse(rawJson);
 		if (!j["d"].is_null()) {
-			d = j["d"].get<std::vector<TestInfo3>>();
+d.fromJson(j["d"]);
 		}
 	}
 

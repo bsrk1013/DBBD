@@ -184,6 +184,11 @@ void CppExtractor::writeCellContents(ofstream& ofs) {
 		if (strcmp(info.type.c_str(), "string") == 0) {
 			ofs << "DBBD::uniToUtf8(" << info.name << ")";
 		}
+		else if (strcmp(info.base.c_str(), "cell") == 0
+			|| strcmp(info.base.c_str(), "Cell") == 0)
+		{
+			ofs << info.name  << ".toJson()";
+		}
 		else {
 			ofs << info.name;
 		}
@@ -200,6 +205,11 @@ void CppExtractor::writeCellContents(ofstream& ofs) {
 		if (strcmp(info.type.c_str(), "string") == 0) {
 			ofs << "\t\t\tstd::string utf8 = j[\"" << info.name << "\"].get<std::string>();" << endl;
 			ofs << "\t\t\t" << info.name << " = DBBD::utf8ToUni(utf8);" << endl;
+		}
+		else if (strcmp(info.base.c_str(), "cell") == 0
+			|| strcmp(info.base.c_str(), "Cell") == 0)
+		{
+			ofs << "\t\t\t" << info.name << ".fromJson(j[\"" << info.name << "\"]);" << endl;
 		}
 		else {
 			ofs << "\t\t\t" << info.name << " = " << "j[\"" << info.name << "\"].get<" << getPropertyType(info.base, info.type) << ">();" << endl;
@@ -340,6 +350,8 @@ string CppExtractor::getDeSerialize(string base, string type, string name, bool 
 	string baseProcess = "";
 	//string baseProcess = isSerialize ? "DBBD::Serialize::write" : "DBBD::Deserialize::read";
 
+	bool isCell = false;
+	bool isVector = false;
 	// typeÀÌ list¶ó¸é
 	if (type.find("list") != std::string::npos) {
 		std::vector<std::string> firstSplit = strSplit(type, '(');
@@ -350,12 +362,13 @@ string CppExtractor::getDeSerialize(string base, string type, string name, bool 
 
 		std::vector<std::string> secondSplit = strSplit(firstSplit[1], ')');
 		type = secondSplit[0];
-		baseProcess = isSerialize
+		isVector = true;
+		/*baseProcess = isSerialize
 			? "DBBD::Serialize::writeVector<std::vector<" + getPropertyType(base, type) + ">, " + getPropertyType(base, type) + ">"
-			: "DBBD::Deserialize::readVector<std::vector<" + getPropertyType(base, type) + ">, " + getPropertyType(base, type) + ">";
+			: "DBBD::Deserialize::readVector<std::vector<" + getPropertyType(base, type) + ">, " + getPropertyType(base, type) + ">";*/
 	}
 	else {
-		baseProcess = isSerialize ? "DBBD::Serialize::write" : "DBBD::Deserialize::read";
+		//baseProcess = isSerialize ? "DBBD::Serialize::write" : "DBBD::Deserialize::read";
 	}
 
 	switch (HashCode(type.c_str())) {
@@ -372,17 +385,36 @@ string CppExtractor::getDeSerialize(string base, string type, string name, bool 
 	case HashCode("char"):
 	case HashCode("byte"):
 	case HashCode("sbyte"):
-		return baseProcess + "(buffer, " + name + ");";
+		//return baseProcess + "(buffer, " + name + ");";
+		break;
 	default:
 		if (strcmp(base.c_str(), "cell") == 0
 			|| strcmp(base.c_str(), "Cell") == 0) {
-			return baseProcess + "(buffer, dynamic_cast<DBBD::Cell*>(&" + name + "));";
+			isCell = true;
+			break;
+			//return baseProcess + "(buffer, " + name + ");";
+			//return baseProcess + "(buffer, dynamic_cast<DBBD::Cell*>(&" + name + "));";
 		}
 		else {
 			string msg = "illegal type and base, type: " + type + ", base: " + base;
 			new exception(msg.c_str());
 		}
 	}
+
+	string result = isSerialize ? "DBBD::Serialize::write" : "DBBD::Deserialize::read";;
+	if (isVector)
+	{
+		result += isCell ? "CellVector" : "Vector";
+		result += "< std::vector<" + getPropertyType(base, type)
+			+ ">, " + getPropertyType(base, type) + ">(buffer, " + name + ");";
+	}
+	else
+	{
+		result += isCell ? "(buffer, dynamic_cast<DBBD::Cell*>(&" + name + "));"
+			: "(buffer, " + name + ");";
+	}
+
+	return result;
 }
 
 string CppExtractor::getLength(string base, string type, string name) {

@@ -3,6 +3,7 @@
 #include "DBBD/Request.h"
 #include "DBBD/Response.h"
 #include "DBBD/Common.hpp"
+#include "DBBD/json.hpp"
 #include "ProtocolType.hpp"
 
 // 유저 정보
