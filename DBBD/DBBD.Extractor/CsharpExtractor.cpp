@@ -357,6 +357,14 @@ string CsharpExtractor::getLength(string base, string type, string name) {
 	case HashCode("string"):
 		return "totalLength += sizeof(" + getPropertyType(base, "uint32") + ") + Encoding.UTF8.GetByteCount(" + name + ")";
 	default:
-		return "totalLength += " + name + ".GetLength();";
+		if (typeInType == 0) {
+			return "totalLength += " + name + ".GetLength();";
+		}
+		else if (typeInType == 1) {
+			string result = "\n\t\t\ttotalLength += sizeof(uint);\n";
+			result += "\t\t\tforeach(var data in " + name + ")\n";
+			result += "\t\t\t\ttotalLength += data.GetLength();\n\t\t";
+			return result;
+		}
 	}
 }
